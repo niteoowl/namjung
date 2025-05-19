@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>우리 학교 정보 포털 - 홈</title>
+    <title>부산남중 알리미 - 홈</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 기본 폰트 및 다크 모드 배경 설정 */
@@ -325,6 +325,85 @@
             color: #e2e8f0;
         }
 
+        /* 모달 배경 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* 어두운 배경 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50; /* 다른 요소 위에 표시 */
+        }
+
+        /* 모달 내용 스타일 */
+        .modal-content {
+            background-color: #2a2a2a; /* 어두운 배경 */
+            padding: 24px; /* 패딩 증가 */
+            border-radius: 12px; /* 모서리 둥글게 */
+            color: #e2e8f0;
+            width: 90%; /* 너비 설정 */
+            max-width: 500px; /* 최대 너비 설정 */
+            max-height: 80%; /* 최대 높이 설정 */
+            overflow-y: auto; /* 내용이 넘치면 스크롤 */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* 그림자 진하게 */
+            border: 1px solid #4a5568; /* 테두리 추가 */
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* 여백 증가 */
+            border-bottom: 1px solid #4a5568;
+            padding-bottom: 12px; /* 패딩 증가 */
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem; /* 글자 크기 증가 */
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+
+        .modal-close-button {
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 1.8rem; /* 닫기 버튼 크기 증가 */
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close-button:hover {
+             color: #63b3ed;
+        }
+
+        .modal-event-item {
+            margin-bottom: 15px; /* 여백 증가 */
+            padding-bottom: 15px; /* 패딩 증가 */
+            border-bottom: 1px dashed #4a5568; /* 점선 구분선 */
+        }
+        .modal-event-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .modal-event-date {
+            font-size: 1rem; /* 글자 크기 증가 */
+            color: #a0aec0;
+            margin-bottom: 6px; /* 여백 증가 */
+        }
+
+         .modal-event-name {
+            font-size: 1.1rem; /* 글자 크기 증가 */
+            color: #e2e8f0;
+            font-weight: bold;
+            word-break: break-word; /* 긴 단어 잘림 방지 */
+         }
+
 
     </style>
 </head>
@@ -452,32 +531,32 @@
 
     <nav class="bottom-nav">
         <ul>
-            <li><a href="/errer" class="nav-link active" data-section="home-section">
+            <li><a href="/error" class="nav-link active" data-section="home-section">
                 <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                 </svg>
                 홈
             </a></li>
-            <li><a href="/errer" class="nav-link" data-section="school-life-section">
+            <li><a href="/error" class="nav-link" data-section="school-life-section">
                  <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
                     <path fill-rule="evenodd" d="M4 5a2 2 0 012-2V4a2 2 0 00-2 2v5a2 2 0 002 2h2.586l1.591 1.591a.997.997 0 001.414 0l1.591-1.591H14a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a2 2 0 114 0v1a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm3 1a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path>
                 </svg>
                 학교생활
             </a></li>
-            <li><a href="/errer" class="nav-link" data-section="community-section">
+            <li><a href="/error" class="nav-link" data-section="community-section">
                  <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.1c-.02-.05-.04-.1-.059-.15L2 14l1.338-3.1c-.02-.05-.04-.1-.059-.15A8.841 8.841 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
                 </svg>
                 커뮤니티
             </a></li>
-             <li><a href="/errer" class="nav-link" data-section="playground-section">
+             <li><a href="/error" class="nav-link" data-section="playground-section">
                  <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm-.414 5.586a1 1 0 000-1.414L9.586 10l-3.793-3.793a1 1 0 011.414-1.414L11 8.586l3.793-3.793a1 1 0 011.414 1.414L12.414 10l3.793 3.793a1 1 0 01-1.414 1.414L11 11.414l-3.793 3.793a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
                 </svg>
                 고민상담
             </a></li>
-             <li><a href="/errer" class="nav-link" data-section="all-section">
+             <li><a href="/error" class="nav-link" data-section="all-section">
                  <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
                 </svg>
@@ -485,6 +564,18 @@
             </a></li>
             </ul>
     </nav>
+
+    <div id="event-detail-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-date-title"></h3>
+                <button class="modal-close-button" id="modal-close-button">&times;</button>
+            </div>
+            <div id="modal-event-list">
+                </div>
+        </div>
+    </div>
+
 
     <script>
         // 모든 콘텐츠 섹션과 내비게이션 링크를 가져옵니다.
@@ -506,6 +597,12 @@
         const calendarMonthYearSpan = document.getElementById('calendar-month-year'); // 달력 월/년 표시 요소
         const prevMonthButton = document.getElementById('prev-month-button'); // 이전 달 버튼
         const nextMonthButton = document.getElementById('next-month-button'); // 다음 달 버튼
+
+        // 상세 일정 모달 요소 가져오기
+        const eventDetailModal = document.getElementById('event-detail-modal');
+        const modalDateTitle = document.getElementById('modal-date-title');
+        const modalEventList = document.getElementById('modal-event-list');
+        const modalCloseButton = document.getElementById('modal-close-button');
 
 
         // 학교생활 섹션 관련 요소는 제거되었습니다.
@@ -532,6 +629,8 @@
         let messageInterval = null; // 메시지 전환 타이머
 
         let currentView = 'calendar'; // 현재 학사일정 보기 상태 ('list' 또는 'calendar') - 기본값을 'calendar'로 변경
+
+        let academicCalendarEvents = []; // 현재 불러온 학사일정 이벤트 데이터를 저장할 배열
 
         // 페이지 로드 시 실행
         window.onload = function() {
@@ -631,6 +730,23 @@
                      viewToggleButton.textContent = '달력 보기';
                  }
             }
+
+            // 모달 닫기 버튼 이벤트 리스너
+            if (modalCloseButton) {
+                modalCloseButton.addEventListener('click', () => {
+                    hideEventDetailModal();
+                });
+            }
+
+             // 모달 외부 클릭 시 닫기 이벤트 리스너
+             if (eventDetailModal) {
+                 eventDetailModal.addEventListener('click', (e) => {
+                     // 모달 내용 영역 클릭은 제외
+                     if (e.target === eventDetailModal) {
+                         hideEventDetailModal();
+                     }
+                 });
+             }
         };
 
         // 저장된 학년/반 정보를 불러와 입력 필드에 설정하는 함수
@@ -1080,6 +1196,7 @@
                 // 'SchoolSchedule' 키가 존재하고, 그 안에 데이터 배열이 있는지 확인
                 if (data.SchoolSchedule && data.SchoolSchedule[1] && data.SchoolSchedule[1].row) {
                     events = data.SchoolSchedule[1].row; // 학사일정 데이터 배열
+                    academicCalendarEvents = events; // 불러온 이벤트 데이터를 전역 변수에 저장
 
                     // 학사일정 목록 업데이트
                     calendarListDiv.innerHTML = ''; // 이전 결과 지우기
@@ -1117,6 +1234,7 @@
                     // calendarViewDiv.innerHTML = errorHtml; // 달력 뷰에는 renderCalendar에서 오류 표시
                      console.error("Academic Calendar API Error Result:", data.RESULT); // 오류 결과 로깅
                      renderCalendar([], monthDate); // 오류 시 빈 달력 표시
+                     academicCalendarEvents = []; // 이벤트 데이터 초기화
                 }
                  else {
                      // 예상치 못한 응답 구조
@@ -1125,6 +1243,7 @@
                      // calendarViewDiv.innerHTML = errorHtml; // 달력 뷰에는 renderCalendar에서 오류 표시
                      console.error("Academic Calendar API Unexpected Response Structure:", data); // 예상치 못한 응답 구조 로깅
                      renderCalendar([], monthDate); // 예상치 못한 응답 시 빈 달력 표시
+                     academicCalendarEvents = []; // 이벤트 데이터 초기화
                 }
 
             } catch (error) {
@@ -1134,6 +1253,7 @@
                 calendarListDiv.innerHTML = errorHtml;
                 // calendarViewDiv.innerHTML = errorHtml; // 달력 뷰에는 renderCalendar에서 오류 표시
                 renderCalendar([], monthDate); // 네트워크 오류 시 빈 달력 표시
+                academicCalendarEvents = []; // 이벤트 데이터 초기화
             }
         }
 
@@ -1147,6 +1267,9 @@
              if (existingGrid) {
                  existingGrid.remove();
              }
+
+             // 달력 로딩 메시지 표시
+             calendarViewDiv.insertAdjacentHTML('beforeend', '<div class="text-gray-400 text-sm calendar-loading-message">달력을 불러오는 중입니다...</div>');
 
 
              const year = date.getFullYear();
@@ -1187,7 +1310,8 @@
 
                  if (dayEvents.length > 0) {
                      // 이벤트가 있으면 첫 번째 이벤트 표시 및 툴팁 내용 생성
-                     eventIndicatorHtml = `<div class="event-indicator">${dayEvents[0].EVENT_NM || '이벤트'}</div>`;
+                     // 모바일에서 잘리지 않도록 word-break: break-word 스타일 추가
+                     eventIndicatorHtml = `<div class="event-indicator" style="word-break: break-word;">${dayEvents[0].EVENT_NM || '이벤트'}</div>`;
 
                      tooltipHtml = `<div class="event-tooltip"><div class="tooltip-date">${(month + 1)}월 ${day}일</div>`;
                      dayEvents.forEach(event => {
@@ -1202,10 +1326,13 @@
                                  currentDay.getMonth() === today.getMonth() &&
                                  currentDay.getDate() === today.getDate();
 
+                 // 이벤트가 있는 날짜에 data-date 속성 추가
                  const dayClass = `calendar-day current-month ${dayEvents.length > 0 ? 'has-event' : ''} ${isToday ? 'border-2 border-blue-500' : ''}`; // 오늘 날짜에 테두리 추가
+                 const dataAttributes = dayEvents.length > 0 ? `data-date="${currentDayYmd}"` : ''; // 이벤트가 있는 날짜에만 data-date 추가
+
 
                  calendarHtml += `
-                     <div class="${dayClass}">
+                     <div class="${dayClass}" ${dataAttributes}>
                          <div class="day-number">${day}</div>
                          ${eventIndicatorHtml}
                          ${tooltipHtml}
@@ -1228,6 +1355,64 @@
 
              // 달력 그리드를 달력 뷰 div에 추가 (네비게이션 아래에 위치)
              calendarViewDiv.insertAdjacentHTML('beforeend', calendarHtml);
+
+             // 로딩 메시지 제거
+             const loadingMessage = calendarViewDiv.querySelector('.calendar-loading-message');
+             if (loadingMessage) {
+                 loadingMessage.remove();
+             }
+
+             // 이벤트가 있는 날짜 셀에 클릭 이벤트 리스너 추가
+             calendarViewDiv.querySelectorAll('.calendar-day.has-event').forEach(dayElement => {
+                 dayElement.addEventListener('click', () => {
+                     const dateYmd = dayElement.getAttribute('data-date');
+                     if (dateYmd) {
+                         showEventDetailModal(dateYmd);
+                     }
+                 });
+             });
+         }
+
+         // 특정 날짜의 상세 일정을 모달로 표시하는 함수
+         function showEventDetailModal(dateYmd) {
+             if (!eventDetailModal || !modalDateTitle || !modalEventList || !academicCalendarEvents) return;
+
+             // 해당 날짜의 이벤트 필터링
+             const dayEvents = academicCalendarEvents.filter(event => event.AA_YMD === dateYmd);
+
+             // 모달 제목 설정
+             const year = dateYmd.substring(0, 4);
+             const month = parseInt(dateYmd.substring(4, 6), 10);
+             const day = parseInt(dateYmd.substring(6, 8), 10);
+             const date = new Date(year, month - 1, day);
+             const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+             const dayOfWeek = dayNames[date.getDay()];
+             modalDateTitle.textContent = `${month}월 ${day}일 (${dayOfWeek})`;
+
+             // 모달 내용 (이벤트 목록) 설정
+             modalEventList.innerHTML = ''; // 이전 내용 지우기
+             if (dayEvents.length > 0) {
+                 dayEvents.forEach(event => {
+                     const eventName = event.EVENT_NM || '행사명 없음';
+                     modalEventList.innerHTML += `
+                         <div class="modal-event-item">
+                             <div class="modal-event-name">${eventName}</div>
+                         </div>
+                     `;
+                 });
+             } else {
+                 modalEventList.innerHTML = '<div class="text-gray-400 text-sm">해당 날짜의 일정이 없습니다.</div>';
+             }
+
+             // 모달 표시
+             eventDetailModal.classList.remove('hidden');
+         }
+
+         // 상세 일정 모달을 숨기는 함수
+         function hideEventDetailModal() {
+             if (eventDetailModal) {
+                 eventDetailModal.classList.add('hidden');
+             }
          }
 
 
