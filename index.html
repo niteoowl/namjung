@@ -278,7 +278,7 @@
 
         <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <input type="text" id="search-input" placeholder="게시물 검색..." class="search-input flex-grow">
-            <button class="write-button flex-shrink-0" id="write-post-button" onclick="showPostModal()" disabled>
+            <button class="write-button flex-shrink-0" id="write-post-button" onclick="window.location.href = '/write';" disabled>
                 <div class="flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.0 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14.25v4.5m-2.25-2.25h4.5" />
@@ -523,10 +523,10 @@
                         // 현재 사용자가 작성한 게시물인 경우에만 삭제 버튼 표시
                         const isAuthor = (userId && postAuthorId === userId);
                         const deleteButtonHtml = isAuthor ?
-                            `<button class="delete-button" onclick="showConfirmModal('${postId}')">삭제</button>` : '';
+                            `<button class="delete-button" onclick="event.stopPropagation(); showConfirmModal('${postId}')">삭제</button>` : '';
 
                         postsHtml += `
-                            <div class="post-card" data-post-id="${postId}">
+                            <div class="post-card" data-post-id="${postId}" onclick="location.href='/post-detail.html?id=${postId}'">
                                 <h3>${postTitle}</h3>
                                 <p>${postContent}</p>
                                 <div class="post-meta">
@@ -620,18 +620,20 @@
             }
         }
 
-        // 게시물 작성 모달 표시
+        // 게시물 작성 모달 표시 (이제 사용되지 않음, /write로 이동)
         function showPostModal() {
-            console.log("showPostModal: 게시물 작성 모달 표시.");
-            postModal.classList.remove('hidden');
+            // 이 함수는 이제 사용되지 않습니다.
+            // 대신 글쓰기 버튼의 onclick 이벤트가 직접 /write로 이동합니다.
+            console.log("showPostModal: 이 함수는 더 이상 사용되지 않습니다. /write 페이지로 이동합니다.");
+            window.location.href = '/write';
         }
 
-        // 게시물 작성 모달 숨기기
+        // 게시물 작성 모달 숨기기 (모달이 사라지므로 필요 없음)
         function hidePostModal() {
-            console.log("hidePostModal: 게시물 작성 모달 숨기기.");
-            postModal.classList.add('hidden');
-            postTitleInput.value = ''; // 모달 닫을 때 내용 초기화
-            postContentTextarea.value = '';
+            console.log("hidePostModal: 게시물 작성 모달 숨기기 (이 함수는 더 이상 사용되지 않습니다).");
+            // postModal.classList.add('hidden');
+            // postTitleInput.value = ''; // 모달 닫을 때 내용 초기화
+            // postContentTextarea.value = '';
         }
 
         // 삭제 확인 모달 표시
@@ -686,9 +688,9 @@
         };
 
         // 전역 스코프에 함수 노출 (HTML에서 직접 호출할 수 있도록)
-        window.showPostModal = showPostModal;
-        window.hidePostModal = hidePostModal;
-        window.addPost = addPost;
+        // window.showPostModal = showPostModal; // 이제 사용되지 않음
+        // window.hidePostModal = hidePostModal; // 이제 사용되지 않음
+        window.addPost = addPost; // addPost는 현재 모달에서 사용되지 않지만, 혹시 모를 재활용을 위해 유지
         window.showConfirmModal = showConfirmModal;
         window.hideConfirmModal = hideConfirmModal;
         // window.deletePost = deletePost; // deletePost는 showConfirmModal에서 호출되므로 직접 노출 필요 없음
