@@ -1,0 +1,25 @@
+<!-- write.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>글쓰기</title>
+  <link rel="stylesheet" href="style/main.css" />
+</head>
+<body>
+  <h1>게시글 작성</h1>
+  <form id="post-form">
+    <input type="text" id="title" placeholder="제목" required /><br />
+    <textarea id="content" placeholder="내용" required></textarea><br />
+    <button type="submit">게시하기</button>
+  </form>
+  <p><a href="index.html">← 메인으로 돌아가기</a></p>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/write.js"></script>
+</body>
+</html>
