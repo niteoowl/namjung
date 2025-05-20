@@ -179,18 +179,20 @@
         <input type="text" id="post-title" placeholder="제목을 입력하세요" class="input-field">
         <div id="editor" class="input-field textarea-field"></div>
 
+        <input type="file" id="quill-image-input" accept="image/*" style="display: none;">
+
         <div class="flex gap-4 mt-6">
-            <button id="submit-post-button" class="action-button" onclick="addPost()" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                작성
-            </button>
             <button class="action-button cancel" onclick="window.history.back()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
                 취소
+            </button>
+            <button id="submit-post-button" class="action-button" onclick="addPost()" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                작성
             </button>
         </div>
     </main>
@@ -199,12 +201,15 @@
     <script type="module">
         console.log("write.html: 스크립트 시작!");
 
+        // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
         let db;
         let auth;
+        let storage; // Firebase Storage 인스턴스
         let userId = 'anonymous';
         let userName = '익명';
         let appId = 'default-app-id';
@@ -226,31 +231,58 @@
         const postTitleInput = document.getElementById('post-title');
         const submitPostButton = document.getElementById('submit-post-button');
         const currentUserIdSpan = document.getElementById('current-user-id');
+        const quillImageInput = document.getElementById('quill-image-input'); // Hidden input for Quill image upload
 
         // Quill 에디터 초기화
         const quill = new Quill('#editor', {
-            theme: 'snow', // 'snow' 또는 'bubble' 테마
+            theme: 'snow',
             placeholder: '내용을 입력하세요...',
             modules: {
-                toolbar: [
-                    ['bold', 'italic', 'underline', 'strike'],        // 텍스트 서식
-                    ['blockquote', 'code-block'],                     // 인용문, 코드 블록
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, false] }], // 제목 1, 2, 일반 텍스트
+                        ['bold', 'italic', 'underline'], // 볼드, 기울임, 밑줄
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }], // 순서 있는/없는 목록
+                        [{ 'align': [] }], // 텍스트 정렬
+                        ['blockquote', 'code-block'], // 인용, 코드 블록
+                        ['link', 'image'], // 링크, 이미지 아이콘
+                        [{ 'color': [] }, { 'background': [] }], // 텍스트 색상, 배경 색상
+                        ['clean'] // 서식 지우기
+                    ],
+                    handlers: {
+                        'image': () => {
+                            quillImageInput.click(); // 이미지 아이콘 클릭 시 숨겨진 파일 입력 필드 클릭
+                        }
+                    }
+                }
+            }
+        });
 
-                    [{ 'header': 1 }, { 'header': 2 }],               // 제목 크기
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],    // 순서 있는/없는 목록
-                    [{ 'script': 'sub'}, { 'script': 'super' }],      // 위첨자/아래첨자
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],          // 들여쓰기/내어쓰기
-                    [{ 'direction': 'rtl' }],                         // 텍스트 방향
+        // 숨겨진 파일 입력 필드 변경 감지 (Quill 이미지 업로드용)
+        quillImageInput.addEventListener('change', async () => {
+            const file = quillImageInput.files[0];
+            if (file) {
+                const range = quill.getSelection(true); // 현재 커서 위치 가져오기
+                if (range) {
+                    quill.editor.insertEmbed(range.index, 'image', 'https://placehold.co/150x150/3a3a3a/e2e8f0?text=Uploading...'); // 업로드 중 임시 이미지 표시
+                    quill.setSelection(range.index + 1); // 커서 이동
 
-                    [{ 'size': ['small', false, 'large', 'huge'] }],  // 폰트 크기
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],        // 제목 태그
-
-                    [{ 'color': [] }, { 'background': [] }],          // 폰트 색상/배경색
-                    [{ 'font': [] }],                                 // 폰트 종류
-                    [{ 'align': [] }],                                // 텍스트 정렬
-
-                    ['clean']                                         // 서식 제거
-                ]
+                    try {
+                        const imageUrl = await uploadImageToFirebase(file); // Firebase Storage에 이미지 업로드
+                        if (imageUrl) {
+                            // 임시 이미지 제거 및 실제 이미지 삽입
+                            quill.deleteText(range.index, 1); // 임시 이미지 삭제 (embed된 객체는 1칸 차지)
+                            quill.insertEmbed(range.index, 'image', imageUrl);
+                            console.log("write.html: Quill 에디터에 이미지 삽입 성공:", imageUrl);
+                        } else {
+                            quill.deleteText(range.index, 1); // 업로드 실패 시 임시 이미지 제거
+                            console.error("write.html: 이미지 업로드 실패, Quill에 이미지 삽입 불가.");
+                        }
+                    } catch (error) {
+                        quill.deleteText(range.index, 1); // 오류 발생 시 임시 이미지 제거
+                        console.error("write.html: 이미지 업로드 중 오류 발생:", error);
+                    }
+                }
             }
         });
 
@@ -260,7 +292,8 @@
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-                console.log("write.html: Firebase 앱, Firestore, Auth 초기화 완료.");
+                storage = getStorage(app); // Firebase Storage 초기화
+                console.log("write.html: Firebase 앱, Firestore, Auth, Storage 초기화 완료.");
 
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
@@ -287,7 +320,8 @@
                             }
                             submitPostButton.disabled = true;
                             submitPostButton.classList.add('opacity-50', 'cursor-not-allowed');
-                            alert('인증에 실패하여 게시물을 작성할 수 없습니다. 콘솔을 확인해주세요.');
+                            // 사용자에게 알림 대신 콘솔에 오류 기록
+                            console.error('인증에 실패하여 게시물을 작성할 수 없습니다. 콘솔을 확인해주세요.');
                         }
                     }
                 }, (error) => {
@@ -298,7 +332,8 @@
                     }
                     submitPostButton.disabled = true;
                     submitPostButton.classList.add('opacity-50', 'cursor-not-allowed');
-                    alert('인증 리스너 오류로 게시물을 작성할 수 없습니다. 콘솔을 확인해주세요.');
+                    // 사용자에게 알림 대신 콘솔에 오류 기록
+                    console.error('인증 리스너 오류로 게시물을 작성할 수 없습니다. 콘솔을 확인해주세요.');
                 });
             } catch (error) {
                 console.error("write.html: Firebase 초기화 오류:", error);
@@ -308,7 +343,29 @@
                 }
                 submitPostButton.disabled = true;
                 submitPostButton.classList.add('opacity-50', 'cursor-not-allowed');
-                alert('Firebase 초기화에 실패했습니다. 콘솔을 확인해주세요.');
+                // 사용자에게 알림 대신 콘솔에 오류 기록
+                console.error('Firebase 초기화에 실패했습니다. 콘솔을 확인해주세요.');
+            }
+        }
+
+        // Firebase Storage에 이미지 업로드하는 함수 (Quill 에디터용)
+        async function uploadImageToFirebase(file) {
+            if (!file) {
+                return null;
+            }
+
+            const storageRef = ref(storage, `artifacts/${appId}/public/images/${userId}/${Date.now()}_${file.name}`);
+
+            try {
+                const snapshot = await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(snapshot.ref);
+                console.log("write.html: 이미지 업로드 성공:", downloadURL);
+                return downloadURL;
+            } catch (error) {
+                console.error("write.html: 이미지 업로드 오류:", error);
+                // 사용자에게 알림 대신 콘솔에 오류 기록
+                console.error('이미지 업로드에 실패했습니다. 콘솔을 확인해주세요.');
+                return null;
             }
         }
 
@@ -316,19 +373,19 @@
             console.log("write.html: addPost 함수 시작!");
             if (!db || !auth.currentUser) {
                 console.error("write.html: addPost: 로그인이 필요합니다.");
-                alert('로그인이 필요합니다.');
+                // 사용자에게 알림 대신 콘솔에 오류 기록
+                console.error('로그인이 필요합니다.');
                 return;
             }
 
             const title = postTitleInput.value.trim();
-            // Quill 에디터에서 HTML 내용 가져오기
-            const content = quill.root.innerHTML.trim();
+            const content = quill.root.innerHTML.trim(); // Quill 에디터의 HTML 콘텐츠
+            const plainTextContent = quill.getText().trim(); // Quill 에디터의 순수 텍스트 콘텐츠
 
-            // Quill 에디터가 비어있는지 확인 (HTML 태그만 있는 경우도 고려)
-            const plainTextContent = quill.getText().trim();
             if (!title || !plainTextContent) {
                 console.warn("write.html: addPost: 제목과 내용을 모두 입력해야 합니다.");
-                alert('제목과 내용을 모두 입력해주세요.');
+                // 사용자에게 알림 대신 콘솔에 오류 기록
+                console.error('제목과 내용을 모두 입력해주세요.');
                 return;
             }
 
@@ -338,28 +395,30 @@
             try {
                 const postsCollectionRef = collection(db, `artifacts/${appId}/public/data/community_posts`);
                 console.log("write.html: addPost: 게시물 추가 시도:", { title, content, authorId: userId, authorName: userName });
-                await addDoc(postsCollectionRef, {
+                const docRef = await addDoc(postsCollectionRef, {
                     title: title,
-                    content: content, // HTML 내용 저장
+                    content: content, // 이미지 URL은 content 내부에 포함될 수 있음
                     authorId: userId,
                     authorName: userName,
                     timestamp: new Date()
                 });
-                console.log("write.html: 게시물 추가 성공!");
-                alert('게시물이 성공적으로 작성되었습니다!');
-                window.location.href = 'community-page.html'; // 커뮤니티 페이지로 돌아가기
+                console.log("write.html: 게시물 추가 성공! 문서 ID:", docRef.id);
+                // 사용자에게 알림 대신 콘솔에 성공 메시지 기록
+                console.log('게시물이 성공적으로 작성되었습니다!');
+
+                // 상세보기 페이지로 리디렉션
+                window.location.href = `post-detail.html?id=${docRef.id}`;
             } catch (e) {
                 console.error("write.html: addPost: 게시물 추가 오류: ", e);
-                // 오류 객체의 상세 정보를 콘솔에 추가 출력
                 if (e.code) {
                     console.error("write.html: addPost: Firebase 오류 코드:", e.code);
                 }
                 if (e.message) {
                     console.error("write.html: addPost: 오류 메시지:", e.message);
                 }
-                alert('게시물 추가에 실패했습니다. 콘솔을 확인해주세요.');
+                // 사용자에게 알림 대신 콘솔에 오류 기록
+                console.error('게시물 추가에 실패했습니다. 콘솔을 확인해주세요.');
             } finally {
-                // 오류 발생 여부와 관계없이 버튼을 다시 활성화
                 submitPostButton.disabled = false;
                 submitPostButton.classList.remove('opacity-50', 'cursor-not-allowed');
             }
