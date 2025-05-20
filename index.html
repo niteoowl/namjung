@@ -1,27 +1,697 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>커뮤니티 메인</title>
-  <link rel="stylesheet" href="style/main.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 학교 정보 포털 - 커뮤니티</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 기본 폰트 및 다크 모드 배경 설정 */
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #1a1a1a; /* 어두운 배경색 */
+            color: #e2e8f0; /* 밝은 글자색 */
+            line-height: 1.6;
+            padding-top: 60px; /* 고정 헤더 높이만큼 여백 추가 */
+            padding-bottom: 60px; /* 하단 내비게이션 바 높이만큼 여백 추가 */
+            scroll-behavior: smooth; /* 부드러운 스크롤 효과 추가 */
+        }
+        /* 섹션 숨김/보기를 위한 스타일 */
+        .hidden {
+            display: none;
+        }
+        /* 상단 고정 헤더 스타일 */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0e1317; /* 헤더 배경색 */
+            color: #e2e8f0; /* 밝은 글자색 */
+            padding: 1rem; /* 패딩 */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 20; /* 다른 요소 위에 표시 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 그림자 추가 */
+        }
+        /* 하단 고정 내비게이션 바 스타일 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2a2a2a; /* 어두운 배경 */
+            color: #e2e8f0; /* 밝은 글자색 */
+            z-index: 10; /* 다른 요소 위에 표시 */
+            border-top: 1px solid #4a5568; /* 상단에 회색 테두리 추가 */
+        }
+        .bottom-nav ul {
+            display: flex;
+            justify-content: space-around; /* 항목 간 간격 균등 분배 */
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .bottom-nav li {
+            flex-grow: 1; /* 항목이 공간을 채우도록 함 */
+            text-align: center;
+        }
+        .bottom-nav a {
+            display: block; /* 링크 영역 전체 클릭 가능 */
+            padding: 8px 0; /* 패딩 줄임 */
+            text-decoration: none;
+            color: #e2e8f0; /* 밝은 글자색 */
+            font-size: 0.7rem; /* 글자 크기 줄임 */
+            transition: color 0.3s ease; /* 색상 변화 애니메이션 */
+        }
+        /* 모든 링크 호버 시 파란색 */
+        .bottom-nav a:hover {
+            color: #63b3ed; /* 호버 시 밝은 파란색 */
+            font-weight: bold;
+        }
+        /* 커뮤니티 링크만 활성(active) 상태일 때 파란색 */
+        .bottom-nav a.active[data-section="community-section"] {
+            color: #63b3ed; /* 활성 시 밝은 파란색 */
+            font-weight: bold;
+        }
+
+         /* 아이콘 스타일 */
+        .nav-icon {
+            display: block;
+            margin: 0 auto 2px; /* 아이콘 위/아래 여백 줄임 */
+            width: 20px; /* 아이콘 크기 줄임 */
+            height: 20px;
+            fill: currentColor; /* 글자색 따라가도록 설정 */
+        }
+
+        /* 게시물 카드 스타일 */
+        .post-card {
+            background-color: #2a2a2a; /* 어두운 배경 */
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* 그림자 진하게 */
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .post-card:hover {
+            background-color: #3a3a3a;
+        }
+        .post-card h3 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+        .post-card p {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            margin-bottom: 8px;
+        }
+        .post-card .post-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* 세로 중앙 정렬 */
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        .post-card .delete-button {
+            background-color: #dc2626; /* 빨간색 */
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .post-card .delete-button:hover {
+            background-color: #ef4444;
+        }
+
+        /* 글쓰기 버튼 스타일 */
+        .write-button {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            width: 100%; /* 너비 기본값 */
+        }
+        .write-button:hover {
+            background-color: #63b3ed;
+        }
+        /* 비활성화된 글쓰기 버튼 스타일 */
+        .write-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #4a5568; /* 비활성화 시에도 배경색 유지 */
+        }
+
+        /* 검색창 스타일 */
+        .search-input {
+            background-color: #3a3a3a;
+            border: 1px solid #4a5568;
+            color: #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .search-input:focus {
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.5);
+        }
+
+        /* 모달 오버레이 스타일 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* 최상단 */
+        }
+
+        /* 모달 콘텐츠 스타일 */
+        .modal-content {
+            background-color: #2a2a2a;
+            padding: 24px;
+            border-radius: 12px;
+            color: #e2e8f0;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #4a5568;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #4a5568;
+            padding-bottom: 12px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+
+        .modal-close-button {
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .modal-close-button:hover {
+             color: #63b3ed;
+        }
+
+        .modal-input {
+            background-color: #3a3a3a;
+            border: 1px solid #4a5568;
+            color: #e2e8f0;
+            padding: 10px 12px;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .modal-input:focus {
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.5);
+        }
+
+        .modal-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .modal-action-button {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+        .modal-action-button:hover {
+            background-color: #63b3ed;
+        }
+
+        /* 사용자 ID 표시 스타일 */
+        .user-id-display {
+            font-size: 0.7rem;
+            color: #a0aec0;
+            margin-top: 10px;
+            text-align: center;
+            word-break: break-all; /* 긴 ID가 잘리지 않도록 */
+        }
+    </style>
 </head>
-<body>
-  <h1>🔥 커뮤니티</h1>
+<body class="flex flex-col min-h-screen">
+    <script>console.log("HTML body 로드 및 기본 스크립트 실행!");</script>
 
-  <div id="post-list">불러오는 중...</div>
+    <header class="fixed-header">
+        <h1 class="text-xl font-bold">커뮤니티</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" onclick="location.reload();">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.582m-15.356-2A8.001 8.001 0 0019.418 15m0 0H15"></path>
+        </svg>
+    </header>
 
-  <p>
-    <a href="write.html">글쓰기 ✍️</a> |
-    <a href="login.html">로그인</a> |
-    <a href="signup.html">회원가입</a>
-  </p>
+    <main class="container mx-auto mt-4 p-4 flex-grow">
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/index.js"></script>
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <input type="text" id="search-input" placeholder="게시물 검색..." class="search-input flex-grow">
+            <button class="write-button flex-shrink-0" id="write-post-button" onclick="showPostModal()" disabled>
+                <div class="flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.0 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14.25v4.5m-2.25-2.25h4.5" />
+                    </svg>
+                    글쓰기
+                </div>
+            </button>
+        </div>
+
+        <div class="user-id-display mb-4">
+            내 ID: <span id="current-user-id">로딩 중...</span>
+        </div>
+
+        <div id="post-list">
+            <div class="text-gray-400 text-center py-8">게시물을 불러오는 중입니다...</div>
+        </div>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <ul>
+            <li><a href="http://1.com" class="nav-link" data-section="home-section">
+                <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                </svg>
+                홈
+            </a></li>
+            <li><a href="http://1.com" class="nav-link" data-section="school-life-section">
+                 <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
+                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2V4a2 2 0 00-2 2v5a2 2 0 002 2h2.586l1.591 1.591a.997.997 0 001.414 0l1.591-1.591H14a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a2 2 0 114 0v1a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm3 1a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h.01a1 1 0 100-2H10zm3 0a1 1 0 000 2h.01a1 1 0 100-2H13z" clip-rule="evenodd"></path>
+                </svg>
+                학교생활
+            </a></li>
+            <li><a href="http://1.com" class="nav-link active" data-section="community-section">
+                 <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.1c-.02-.05-.04-.1-.059-.15L2 14l1.338-3.1c-.02-.05-.04-.1-.059-.15A8.841 8.841 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z" clip-rule="evenodd"></path>
+                </svg>
+                커뮤니티
+            </a></li>
+             <li><a href="http://1.com" class="nav-link" data-section="playground-section">
+                 <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm-.414 5.586a1 1 0 000-1.414L9.586 10l-3.793-3.793a1 1 0 011.414-1.414L11 8.586l3.793-3.793a1 1 0 011.414 1.414L12.414 10l3.793 3.793a1 1 0 01-1.414 1.414L11 11.414l-3.793 3.793a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+                고민상담
+            </a></li>
+             <li><a href="http://1.com" class="nav-link" data-section="all-section">
+                 <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                전체
+            </a></li>
+            </ul>
+    </nav>
+
+    <div id="post-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>새 게시물 작성</h3>
+                <button class="modal-close-button" onclick="hidePostModal()">&times;</button>
+            </div>
+            <input type="text" id="post-title" placeholder="제목" class="modal-input">
+            <textarea id="post-content" placeholder="내용" class="modal-input modal-textarea"></textarea>
+            <button class="modal-action-button" onclick="addPost()">작성</button>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>게시물 삭제 확인</h3>
+                <button class="modal-close-button" onclick="hideConfirmModal()">&times;</button>
+            </div>
+            <p class="text-gray-400 mb-6">정말로 이 게시물을 삭제하시겠습니까?</p>
+            <div class="flex justify-end gap-4">
+                <button class="modal-action-button bg-gray-600 hover:bg-gray-700" onclick="hideConfirmModal()">취소</button>
+                <button class="modal-action-button bg-red-600 hover:bg-red-700" id="confirm-delete-button">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // 커뮤니티 페이지 스크립트 시작을 확인하는 로그를 추가합니다.
+        console.log("커뮤니티 페이지 스크립트 시작!");
+
+        // Firebase SDK 임포트
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // 전역 변수 선언
+        let db;
+        let auth;
+        let userId = 'anonymous'; // 초기 사용자 ID
+        let userName = '익명'; // 초기 사용자 이름
+        let appId = 'default-app-id'; // 기본 앱 ID
+
+        // Canvas 환경에서 제공되는 전역 변수 사용
+        // Canvas 외부에서 실행될 경우 __app_id가 undefined가 됩니다.
+        if (typeof __app_id !== 'undefined') {
+            appId = __app_id;
+        }
+
+        // Firebase 설정 정보
+        const firebaseConfig = {
+            apiKey: "AIzaSyBzmE9Z6iTrdp2U85oTt_2C3UGTWp9rqac",
+            authDomain: "busan-nam.firebaseapp.com",
+            projectId: "busan-nam",
+            storageBucket: "busan-nam.appspot.com",
+            messagingSenderId: "1096676975422",
+            appId: "1:1096676975422:web:563d285bb49dd50488026f",
+            measurementId: "G-V305K7BGVZ"
+        };
+        // initialAuthToken은 Canvas 환경에서만 제공됩니다.
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // DOM 요소 참조
+        const postListDiv = document.getElementById('post-list');
+        const postModal = document.getElementById('post-modal');
+        const postTitleInput = document.getElementById('post-title');
+        const postContentTextarea = document.getElementById('post-content');
+        const confirmModal = document.getElementById('confirm-modal');
+        const confirmDeleteButton = document.getElementById('confirm-delete-button');
+        const currentUserIdSpan = document.getElementById('current-user-id');
+        const searchInput = document.getElementById('search-input');
+        const writePostButton = document.getElementById('write-post-button'); // 글쓰기 버튼 참조 추가
+
+        // Firebase 초기화 및 인증
+        async function initializeFirebase() {
+            console.log("initializeFirebase 함수 시작!"); // 함수 시작 로그
+
+            // Firebase 설정 정보가 유효한지 확인
+            if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+                console.error("Firebase 설정이 불완전합니다. apiKey 또는 projectId가 누락되었습니다.");
+                postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">앱 설정 오류: Firebase 구성 정보가 불완전합니다.</div>';
+                if (currentUserIdSpan) {
+                    currentUserIdSpan.textContent = '설정 오류';
+                    currentUserIdSpan.style.color = 'red';
+                }
+                writePostButton.disabled = true;
+                writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                return; // Firebase 초기화 중단
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                console.log("Firebase 앱, Firestore, Auth 초기화 완료."); // 초기화 완료 로그
+
+                // 인증 상태 변화 감지
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        userName = `사용자_${userId.substring(0, 8)}`; // 사용자 ID의 일부를 이름으로 사용
+                        if (currentUserIdSpan) {
+                            currentUserIdSpan.textContent = userId; // 전체 사용자 ID 표시
+                        }
+                        console.log("Firebase authenticated. User ID:", userId);
+                        writePostButton.disabled = false; // 인증 성공 시 버튼 활성화
+                        writePostButton.classList.remove('opacity-50', 'cursor-not-allowed'); // 비활성화 스타일 제거
+                        loadPosts();
+                    } else {
+                        console.log("onAuthStateChanged: 사용자 없음. 익명 로그인 시도...");
+                        writePostButton.disabled = true; // 인증 전 버튼 비활성화 유지
+                        writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+                        try {
+                            // Canvas 환경 외부에서 실행될 경우 initialAuthToken은 null이므로 익명 로그인 시도
+                            // Canvas 환경에서는 initialAuthToken이 제공되지만, auth/custom-token-mismatch 오류를 피하기 위해 익명 로그인 우선 시도
+                            await signInAnonymously(auth);
+                            console.log("onAuthStateChanged: 익명 로그인 시도 완료.");
+                            // onAuthStateChanged 리스너가 새로운 익명 사용자로 다시 실행됩니다.
+                            // 그러면 이 콜백의 다음 호출에서 버튼이 활성화되고 게시물이 로드됩니다.
+                        } catch (authError) {
+                            console.error("onAuthStateChanged: 익명 인증 실패:", authError);
+                            if (currentUserIdSpan) {
+                                currentUserIdSpan.textContent = '인증 실패: ' + authError.code; // 더 구체적인 오류 코드 표시
+                                currentUserIdSpan.style.color = 'red';
+                            }
+                            writePostButton.disabled = true; // 버튼 비활성화 유지
+                            writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                            postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">인증에 실패하여 게시물을 불러올 수 없습니다. 콘솔을 확인해주세요.</div>';
+                        }
+                    }
+                }, (error) => {
+                    console.error("onAuthStateChanged 리스너 오류:", error);
+                    if (currentUserIdSpan) {
+                        currentUserIdSpan.textContent = '인증 리스너 오류';
+                        currentUserIdSpan.style.color = 'red';
+                    }
+                    writePostButton.disabled = true;
+                    writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">인증 리스너 오류로 게시물을 불러올 수 없습니다. 콘솔을 확인해주세요.</div>';
+                });
+            } catch (error) {
+                console.error("Firebase 초기화 오류:", error);
+                postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">Firebase 초기화에 실패했습니다. 콘솔을 확인해주세요.</div>';
+                if (currentUserIdSpan) {
+                    currentUserIdSpan.textContent = '초기화 오류';
+                    currentUserIdSpan.style.color = 'red';
+                }
+                writePostButton.disabled = true;
+                writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // 게시물 불러오기 (실시간 업데이트)
+        function loadPosts() {
+            console.log("loadPosts 함수 시작!"); // 함수 시작 로그
+            if (!db) {
+                console.error("Firestore가 초기화되지 않았습니다. loadPosts를 호출할 수 없습니다.");
+                postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">데이터베이스 초기화 대기 중...</div>';
+                return;
+            }
+
+            // 'community_posts' 컬렉션에 대한 참조
+            // Canvas 환경 외부에서 실행될 경우 appId가 'default-app-id'가 됩니다.
+            const postsCollectionRef = collection(db, `artifacts/${appId}/public/data/community_posts`);
+            console.log("Firestore 컬렉션 경로:", `artifacts/${appId}/public/data/community_posts`); // 컬렉션 경로 로그
+
+            // 쿼리: timestamp를 기준으로 최신 게시물이 위로 오도록 정렬
+            const q = query(postsCollectionRef, orderBy('timestamp', 'desc'));
+
+            // 실시간 리스너 설정
+            onSnapshot(q, (snapshot) => {
+                console.log("onSnapshot 콜백 실행됨. 문서 수:", snapshot.size); // 스냅샷 크기 로그
+                let postsHtml = '';
+                if (snapshot.empty) {
+                    postsHtml = '<div class="text-gray-400 text-center py-8">아직 게시물이 없습니다. 첫 게시물을 작성해보세요!</div>';
+                    console.log("게시물이 없습니다.");
+                } else {
+                    snapshot.forEach(doc => {
+                        const post = doc.data();
+                        const postId = doc.id;
+                        const postTitle = post.title || '제목 없음';
+                        const postContent = post.content || '내용 없음';
+                        const postAuthorName = post.authorName || '익명';
+                        const postTimestamp = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString('ko-KR') : '날짜 없음';
+                        const postAuthorId = post.authorId;
+
+                        // 현재 사용자가 작성한 게시물인 경우에만 삭제 버튼 표시
+                        const isAuthor = (userId && postAuthorId === userId);
+                        const deleteButtonHtml = isAuthor ?
+                            `<button class="delete-button" onclick="showConfirmModal('${postId}')">삭제</button>` : '';
+
+                        postsHtml += `
+                            <div class="post-card" data-post-id="${postId}">
+                                <h3>${postTitle}</h3>
+                                <p>${postContent}</p>
+                                <div class="post-meta">
+                                    <span>작성자: ${postAuthorName}</span>
+                                    <span>${postTimestamp}</span>
+                                    ${deleteButtonHtml}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    console.log("게시물 목록 렌더링 완료.");
+                }
+                postListDiv.innerHTML = postsHtml;
+            }, (error) => {
+                console.error("게시물 불러오기 오류 (onSnapshot 에러 콜백):", error);
+                postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">게시물을 불러오는 데 오류가 발생했습니다. 콘솔을 확인해주세요.</div>';
+            });
+        }
+
+        // 새 게시물 추가 함수
+        async function addPost() {
+            console.log("addPost 함수 시작!");
+            if (!db || !auth.currentUser) {
+                console.error("addPost: 로그인이 필요합니다.");
+                alert('로그인이 필요합니다.'); // 사용자에게도 알림
+                return;
+            }
+
+            const title = postTitleInput.value.trim();
+            const content = postContentTextarea.value.trim();
+
+            if (!title || !content) {
+                console.warn("addPost: 제목과 내용을 모두 입력해야 합니다.");
+                alert('제목과 내용을 모두 입력해주세요.');
+                return;
+            }
+
+            try {
+                const postsCollectionRef = collection(db, `artifacts/${appId}/public/data/community_posts`);
+                console.log("addPost: 게시물 추가 시도:", { title, content, authorId: userId, authorName: userName });
+                await addDoc(postsCollectionRef, {
+                    title: title,
+                    content: content,
+                    authorId: userId,
+                    authorName: userName,
+                    timestamp: new Date() // 클라이언트 타임스탬프 사용
+                });
+                console.log("addPost: 게시물 추가 성공!");
+                postTitleInput.value = '';
+                postContentTextarea.value = '';
+                hidePostModal();
+            } catch (e) {
+                console.error("addPost: 게시물 추가 오류: ", e);
+                alert('게시물 추가에 실패했습니다. 콘솔을 확인해주세요.');
+            }
+        }
+
+        // 게시물 삭제 함수
+        async function deletePost(postId) {
+            console.log("deletePost 함수 시작! postId:", postId);
+            if (!db || !auth.currentUser) {
+                console.error("deletePost: 로그인이 필요합니다.");
+                alert('로그인이 필요합니다.');
+                return;
+            }
+
+            try {
+                const postRef = doc(db, `artifacts/${appId}/public/data/community_posts`, postId);
+                console.log("deletePost: 삭제할 게시물 참조:", postRef.path);
+                const postSnapshot = await getDoc(postRef); // 문서 존재 여부 및 작성자 확인을 위해 가져옴
+
+                if (!postSnapshot.exists()) {
+                    console.warn("deletePost: 삭제할 게시물을 찾을 수 없습니다:", postId);
+                    alert('삭제할 게시물을 찾을 수 없습니다.');
+                    return;
+                }
+
+                const postData = postSnapshot.data();
+                if (postData.authorId !== userId) {
+                    console.warn("deletePost: 삭제 권한 없음. 작성자 ID:", postData.authorId, "현재 사용자 ID:", userId);
+                    alert('자신이 작성한 게시물만 삭제할 수 있습니다.');
+                    return;
+                }
+
+                await deleteDoc(postRef);
+                console.log("deletePost: 게시물 삭제 성공! postId:", postId);
+                hideConfirmModal(); // 삭제 후 확인 모달 닫기
+            } catch (e) {
+                console.error("deletePost: 게시물 삭제 오류: ", e);
+                alert('게시물 삭제에 실패했습니다. 콘솔을 확인해주세요.');
+            }
+        }
+
+        // 게시물 작성 모달 표시
+        function showPostModal() {
+            console.log("showPostModal: 게시물 작성 모달 표시.");
+            postModal.classList.remove('hidden');
+        }
+
+        // 게시물 작성 모달 숨기기
+        function hidePostModal() {
+            console.log("hidePostModal: 게시물 작성 모달 숨기기.");
+            postModal.classList.add('hidden');
+            postTitleInput.value = ''; // 모달 닫을 때 내용 초기화
+            postContentTextarea.value = '';
+        }
+
+        // 삭제 확인 모달 표시
+        let postIdToDelete = null; // 삭제할 게시물 ID를 저장할 변수
+        function showConfirmModal(postId) {
+            console.log("showConfirmModal: 삭제 확인 모달 표시. 삭제할 postId:", postId);
+            postIdToDelete = postId;
+            confirmModal.classList.remove('hidden');
+            // 삭제 버튼에 클릭 이벤트 리스너를 한 번만 추가 (이미 추가되어 있다면 무시)
+            confirmDeleteButton.onclick = () => deletePost(postIdToDelete);
+        }
+
+        // 삭제 확인 모달 숨기기
+        function hideConfirmModal() {
+            console.log("hideConfirmModal: 삭제 확인 모달 숨기기.");
+            confirmModal.classList.add('hidden');
+            postIdToDelete = null;
+        }
+
+        // 검색 기능 (클라이언트 측 필터링)
+        searchInput.addEventListener('input', () => {
+            console.log("검색 입력 감지:", searchInput.value);
+            const searchTerm = searchInput.value.toLowerCase();
+            const postCards = postListDiv.querySelectorAll('.post-card');
+
+            postCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const content = card.querySelector('p').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || content.includes(searchTerm)) {
+                    card.style.display = ''; // 표시
+                } else {
+                    card.style.display = 'none'; // 숨김
+                }
+            });
+        });
+
+        // 페이지 로드 시 하단 내비게이션 링크 활성 클래스 설정
+        window.onload = function() {
+            console.log("window.onload 이벤트 발생.");
+            const navLinks = document.querySelectorAll('.bottom-nav .nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-section') === 'community-section') {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Firebase 초기화 시작
+            initializeFirebase();
+        };
+
+        // 전역 스코프에 함수 노출 (HTML에서 직접 호출할 수 있도록)
+        window.showPostModal = showPostModal;
+        window.hidePostModal = hidePostModal;
+        window.addPost = addPost;
+        window.showConfirmModal = showConfirmModal;
+        window.hideConfirmModal = hideConfirmModal;
+        // window.deletePost = deletePost; // deletePost는 showConfirmModal에서 호출되므로 직접 노출 필요 없음
+    </script>
 </body>
 </html>
