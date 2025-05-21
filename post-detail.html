@@ -145,20 +145,14 @@
         /* 액션 버튼 섹션 */
         .action-buttons {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 10px;
             padding: 15px 0;
             border-top: 1px solid #4a5568;
             margin-top: 20px;
             color: #a0aec0;
         }
-        .action-buttons .vote-buttons {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .action-buttons .vote-button,
-        .action-buttons .action-icon-button {
+        .action-buttons .action-button {
             background-color: #3a3a3a;
             border: 1px solid #4a5568;
             padding: 8px 12px;
@@ -170,25 +164,24 @@
             justify-content: center;
             color: #e2e8f0;
         }
-        .action-buttons .vote-button:hover,
-        .action-buttons .action-icon-button:hover {
+        .action-buttons .action-button:hover {
             background-color: #4a4a4a;
             border-color: #63b3ed;
         }
-        .action-buttons .vote-button svg,
-        .action-buttons .action-icon-button svg {
+        .action-buttons .action-button svg {
             width: 20px;
             height: 20px;
             fill: currentColor;
+            margin-right: 5px;
         }
-        .action-buttons .vote-count {
+        .action-buttons .like-count {
             font-weight: bold;
             font-size: 1.1rem;
             color: #e2e8f0;
+            margin-left: 5px;
         }
-        .action-buttons .right-buttons {
-            display: flex;
-            gap: 10px;
+        .action-buttons .spacer {
+            flex-grow: 1; /* Push buttons to the right */
         }
 
         /* 댓글 섹션 */
@@ -233,10 +226,15 @@
         }
         .comment-item .comment-meta {
             display: flex;
-            justify-content: space-between;
+            align-items: center; /* Align items vertically */
+            gap: 10px; /* Space between elements */
             font-size: 0.75rem;
             color: #6b7280;
             margin-bottom: 8px;
+        }
+        .comment-item .comment-meta .author-name {
+            font-weight: bold;
+            color: #e2e8f0;
         }
         .comment-item .comment-content {
             color: #e2e8f0;
@@ -250,12 +248,7 @@
             font-size: 0.75rem;
             color: #a0aec0;
         }
-        .comment-item .comment-actions .vote-buttons {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .comment-item .comment-actions .vote-button {
+        .comment-item .comment-actions .like-button {
             background: none;
             border: none;
             color: #a0aec0;
@@ -263,21 +256,17 @@
             padding: 2px 5px;
             border-radius: 4px;
             transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        .comment-item .comment-actions .vote-button:hover {
+        .comment-item .comment-actions .like-button:hover {
             color: #63b3ed;
         }
-        .comment-item .comment-actions .reply-button {
-            background-color: #4a5568;
-            color: #e2e8f0;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .comment-item .comment-actions .reply-button:hover {
-            background-color: #63b3ed;
+        .comment-item .comment-actions .like-button svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
         .comment-input-container {
             position: fixed;
@@ -337,11 +326,19 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
         </button>
-        <h1 class="text-xl font-bold flex-grow text-center">뷰티</h1> <button class="text-gray-400 hover:text-white ml-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
-            </svg>
-        </button>
+        <h1 class="text-xl font-bold flex-grow text-center">자유 게시판 <span class="text-base text-gray-400 ml-2">인천대</span></h1>
+        <div class="flex items-center gap-4">
+            <button class="text-gray-400 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.04 5.455 1.31m5.714 0a24.248 24.248 0 01-5.714 0m5.714 0a3 3 0 10-3 3H9.257a3 3 0 10-3-3m10.135-10.487a1.5 1.5 0 00-2.12-.047L12 3.622m-1.5.342l-2.653 2.653a1.5 1.5 0 00-2.12-.047M12 21l.75-.75L12 21zm-4.5-4.5H5.25A2.25 2.25 0 013 14.25V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v8.999a2.25 2.25 0 01-2.25 2.25H16.5" />
+                </svg>
+            </button>
+            <button class="text-gray-400 hover:text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                </svg>
+            </button>
+        </div>
     </header>
 
     <main class="container mx-auto mt-4 p-4 flex-grow">
@@ -352,7 +349,8 @@
         <div class="comments-section mt-6">
             <div class="comments-header">
                 <h3>댓글 <span id="comment-count">0</span></h3>
-                <div class="sort-options">오래 된 순</div> </div>
+                <div class="sort-options">오래 된 순</div>
+            </div>
             <div class="comments-guideline">
                 댓글 작성 전 커뮤니티 이용 가이드를 꼭 읽고 지켜 주세요.
             </div>
@@ -422,7 +420,7 @@
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
                         userId = user.uid;
-                        userName = `사용자_${userId.substring(0, 8)}`; // 사용자 ID의 일부를 이름으로 사용
+                        userName = `익명`; // 사용자 이름은 항상 '익명'으로 표시
                         console.log("post-detail.html: Firebase authenticated. User ID:", userId);
                         currentPostId = getPostIdFromUrl();
                         if (currentPostId) {
@@ -469,55 +467,42 @@
                     console.log("post-detail.html: 게시물 데이터 불러오기 성공:", post);
 
                     const postTitle = post.title || '제목 없음';
-                    const postAuthorName = post.authorName || '익명';
-                    const postTimestamp = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString('ko-KR') : '날짜 없음';
+                    // const postAuthorName = post.authorName || '익명'; // Always '익명' as per image
+                    const postTimestamp = post.timestamp ? new Date(post.timestamp.toDate()) : new Date();
+                    const formattedDate = postTimestamp.toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\. /g, '/').slice(0, -1);
+                    const formattedTime = postTimestamp.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
                     const postContentHtml = post.content || '<p>내용 없음</p>'; // Quill에서 저장된 HTML 내용
-                    const postCategory = post.category || '일반'; // 카테고리 필드 추가 (기본값 '일반')
                     const postViews = post.views || Math.floor(Math.random() * 100) + 1; // 조회수 필드 추가 (임시 랜덤값)
-                    const postTemperature = post.temperature || Math.floor(Math.random() * 100); // 온도 필드 추가 (임시 랜덤값)
+                    const postLikes = post.likes || Math.floor(Math.random() * 200); // 좋아요 수 (임시)
+                    const postComments = post.comments || Math.floor(Math.random() * 50); // 댓글 수 (임시)
+                    const postScraps = post.scraps || Math.floor(Math.random() * 10); // 스크랩 수 (임시)
 
                     postDetailContentDiv.innerHTML = `
-                        <h2>${postTitle}</h2>
                         <div class="post-meta">
                             <div class="author-info">
-                                <span>${postAuthorName} ${postTemperature} ℃</span>
-                                <span class="category">${postCategory}</span>
-                            </div>
-                            <div class="date-views">
-                                <span>${postTimestamp} 조회 ${postViews} 회</span>
+                                <span class="author-name">익명</span>
+                                <span>${formattedDate} ${formattedTime}</span>
                             </div>
                         </div>
+                        <h2>${postTitle}</h2>
                         <div class="ql-editor">
                             ${postContentHtml}
                         </div>
                         <div class="action-buttons">
-                            <div class="vote-buttons">
-                                <button class="vote-button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
-                                    </svg>
-                                </button>
-                                <span class="vote-count">0</span>
-                                <button class="vote-button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div class="right-buttons">
-                                <button class="action-icon-button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                                    </svg>
-                                    저장
-                                </button>
-                                <button class="action-icon-button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186A.75.75 0 017.5 12m0 0H12m-4.783 1.293a2.25 2.25 0 110 2.186m0-2.186A.75.75 0 017.5 15m0 0H12m-4.783-4.293a2.25 2.25 0 100 2.186m0-2.186A.75.75 0 017.5 9m0 0H12m7.5 0a2.25 2.25 0 100-2.186m0 2.186A.75.75 0 0119.5 9m0 0H12m7.5 3a2.25 2.25 0 100-2.186m0 2.186A.75.75 0 0119.5 12m0 0H12m7.5 3a2.25 2.25 0 100-2.186m0 2.186A.75.75 0 0119.5 15m0 0H12" />
-                                    </svg>
-                                    공유
-                                </button>
-                            </div>
+                            <button class="action-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
+                                </svg>
+                                공감 <span class="like-count">${postLikes}</span>
+                            </button>
+                            <button class="action-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 10.5V1.5m0 9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 10.5v-4.5m0 0a2.25 2.25 0 012.25-2.25h1.372c.516 0 .966.351 1.048.832l3.233 11.056l-.657 2.105M15.75 16.5H18a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0018 4.5h-1.372c-.516 0-.966-.351-1.048-.832L12.97 1.5l-.657 2.105M12 18.75h.008v.008H12v-.008z" />
+                                </svg>
+                                스크랩
+                            </button>
+                            <div class="spacer"></div>
+                            <span>조회 ${postViews}</span>
                         </div>
                     `;
                 } else {
@@ -550,35 +535,27 @@
                 } else {
                     snapshot.forEach(doc => {
                         const comment = doc.data();
-                        const commentAuthorName = comment.authorName || '익명';
-                        const commentTimestamp = comment.timestamp ? new Date(comment.timestamp.toDate()).toLocaleString('ko-KR') : '날짜 없음';
+                        // const commentAuthorName = comment.authorName || '익명'; // Always '익명' as per image
+                        const commentTimestamp = comment.timestamp ? new Date(comment.timestamp.toDate()) : new Date();
+                        const formattedDate = commentTimestamp.toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\. /g, '/').slice(0, -1);
+                        const formattedTime = commentTimestamp.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
                         const commentContent = comment.content || '내용 없음';
-                        const commentLikes = comment.likes || 0; // 좋아요 수 (임시)
-                        const commentDislikes = comment.dislikes || 0; // 싫어요 수 (임시)
+                        const commentLikes = comment.likes || Math.floor(Math.random() * 100); // 좋아요 수 (임시)
 
                         commentsHtml += `
                             <div class="comment-item">
                                 <div class="comment-meta">
-                                    <span>${commentAuthorName}</span>
-                                    <span>${commentTimestamp}</span>
+                                    <span class="author-name">익명</span>
+                                    <span>${formattedDate} ${formattedTime}</span>
                                 </div>
                                 <div class="comment-content">${commentContent}</div>
                                 <div class="comment-actions">
-                                    <div class="vote-buttons">
-                                        <button class="vote-button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879.629-2.031.928-3.35.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
-                                            </svg>
-                                        </button>
+                                    <button class="like-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
+                                        </svg>
                                         <span>${commentLikes}</span>
-                                        <button class="vote-button">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 rotate-180">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
-                                            </svg>
-                                        </button>
-                                        <span>${commentDislikes}</span>
-                                    </div>
-                                    <button class="reply-button">대 댓글 0개 보기</button>
+                                    </button>
                                 </div>
                             </div>
                         `;
@@ -616,8 +593,7 @@
                     authorId: userId,
                     authorName: userName,
                     timestamp: new Date(),
-                    likes: 0,
-                    dislikes: 0
+                    likes: 0
                 });
                 console.log("post-detail.html: 댓글 추가 성공!");
                 commentInput.value = ''; // 입력창 비우기
