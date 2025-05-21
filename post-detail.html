@@ -14,8 +14,11 @@
             color: #e2e8f0; /* 밝은 글자색 */
             line-height: 1.6;
             padding-top: 60px; /* 고정 헤더 높이만큼 여백 추가 */
-            padding-bottom: 20px; /* 하단 여백 */
+            padding-bottom: 80px; /* 하단 댓글 입력창 높이만큼 여백 추가 */
             scroll-behavior: smooth; /* 부드러운 스크롤 효과 추가 */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         /* 상단 고정 헤더 스타일 */
         .fixed-header {
@@ -38,6 +41,7 @@
             padding: 24px;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* 그림자 진하게 */
+            margin-bottom: 20px; /* 댓글 섹션과의 간격 */
         }
         .post-detail-container h2 {
             font-size: 1.8rem;
@@ -47,15 +51,33 @@
             word-break: break-word; /* 긴 제목 줄바꿈 */
         }
         .post-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             font-size: 0.85rem;
             color: #a0aec0;
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #4a5568; /* 구분선 */
         }
+        .post-meta .author-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .post-meta .author-info .category {
+            background-color: #63b3ed; /* 카테고리 배경색 */
+            color: #1a1a1a; /* 카테고리 글자색 */
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .post-meta .date-views {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
         /* Quill 에디터 내용 렌더링을 위한 스타일 (편집 기능 없이 내용만 표시) */
         .ql-editor {
             min-height: auto; /* 내용에 따라 높이 자동 조절 */
@@ -119,6 +141,191 @@
             color: #63b3ed;
             text-decoration: underline;
         }
+
+        /* 액션 버튼 섹션 */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid #4a5568;
+            margin-top: 20px;
+            color: #a0aec0;
+        }
+        .action-buttons .vote-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .action-buttons .vote-button,
+        .action-buttons .action-icon-button {
+            background-color: #3a3a3a;
+            border: 1px solid #4a5568;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e2e8f0;
+        }
+        .action-buttons .vote-button:hover,
+        .action-buttons .action-icon-button:hover {
+            background-color: #4a4a4a;
+            border-color: #63b3ed;
+        }
+        .action-buttons .vote-button svg,
+        .action-buttons .action-icon-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        .action-buttons .vote-count {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #e2e8f0;
+        }
+        .action-buttons .right-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* 댓글 섹션 */
+        .comments-section {
+            background-color: #2a2a2a;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #4a5568;
+            padding-bottom: 15px;
+        }
+        .comments-header h3 {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+        .comments-header .sort-options {
+            font-size: 0.85rem;
+            color: #a0aec0;
+        }
+        .comments-guideline {
+            background-color: #3a3a3a;
+            color: #a0aec0;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .comment-item {
+            background-color: #3a3a3a;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .comment-item .comment-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        .comment-item .comment-content {
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        .comment-item .comment-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            color: #a0aec0;
+        }
+        .comment-item .comment-actions .vote-buttons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .comment-item .comment-actions .vote-button {
+            background: none;
+            border: none;
+            color: #a0aec0;
+            cursor: pointer;
+            padding: 2px 5px;
+            border-radius: 4px;
+            transition: color 0.3s ease;
+        }
+        .comment-item .comment-actions .vote-button:hover {
+            color: #63b3ed;
+        }
+        .comment-item .comment-actions .reply-button {
+            background-color: #4a5568;
+            color: #e2e8f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .comment-item .comment-actions .reply-button:hover {
+            background-color: #63b3ed;
+        }
+        .comment-input-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0e1317;
+            padding: 1rem;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 20;
+        }
+        .comment-input-container .comment-input {
+            flex-grow: 1;
+            background-color: #3a3a3a;
+            border: 1px solid #4a5568;
+            color: #e2e8f0;
+            padding: 10px 12px;
+            border-radius: 20px; /* 둥근 모서리 */
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .comment-input-container .comment-input:focus {
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.5);
+        }
+        .comment-input-container .send-button {
+            background-color: #63b3ed;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .comment-input-container .send-button:hover {
+            background-color: #4a90e2;
+        }
+        .comment-input-container .send-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -130,29 +337,53 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
         </button>
-        <h1 class="text-xl font-bold flex-grow">게시물 상세</h1>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" onclick="location.reload();">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.582m-15.356-2A8.001 8.001 0 0019.418 15m0 0H15"></path>
-        </svg>
+        <h1 class="text-xl font-bold flex-grow text-center">뷰티</h1> <button class="text-gray-400 hover:text-white ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+        </button>
     </header>
 
     <main class="container mx-auto mt-4 p-4 flex-grow">
         <div id="post-detail-content" class="post-detail-container">
             <div class="text-gray-400 text-center py-8">게시물을 불러오는 중입니다...</div>
         </div>
+
+        <div class="comments-section mt-6">
+            <div class="comments-header">
+                <h3>댓글 <span id="comment-count">0</span></h3>
+                <div class="sort-options">오래 된 순</div> </div>
+            <div class="comments-guideline">
+                댓글 작성 전 커뮤니티 이용 가이드를 꼭 읽고 지켜 주세요.
+            </div>
+            <div id="comments-list">
+                <div class="text-gray-400 text-center py-4">댓글을 불러오는 중입니다...</div>
+            </div>
+        </div>
     </main>
+
+    <div class="comment-input-container">
+        <input type="text" id="comment-input" placeholder="댓글을 입력 해 주세요" class="comment-input">
+        <button id="send-comment-button" class="send-button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+            </svg>
+        </button>
+    </div>
 
     <script type="module">
         console.log("post-detail.html: 스크립트 시작!");
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         let db;
         let auth;
         let userId = 'anonymous'; // 현재 사용자 ID (권한 확인용)
+        let userName = '익명'; // 사용자 이름
         let appId = 'default-app-id';
+        let currentPostId = null; // 현재 보고 있는 게시물 ID
 
         if (typeof __app_id !== 'undefined') {
             appId = __app_id;
@@ -169,6 +400,10 @@
         };
 
         const postDetailContentDiv = document.getElementById('post-detail-content');
+        const commentsListDiv = document.getElementById('comments-list');
+        const commentInput = document.getElementById('comment-input');
+        const sendCommentButton = document.getElementById('send-comment-button');
+        const commentCountSpan = document.getElementById('comment-count');
 
         // URL에서 게시물 ID 가져오기
         function getPostIdFromUrl() {
@@ -187,10 +422,12 @@
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
                         userId = user.uid;
+                        userName = `사용자_${userId.substring(0, 8)}`; // 사용자 ID의 일부를 이름으로 사용
                         console.log("post-detail.html: Firebase authenticated. User ID:", userId);
-                        const postId = getPostIdFromUrl();
-                        if (postId) {
-                            loadPostDetail(postId);
+                        currentPostId = getPostIdFromUrl();
+                        if (currentPostId) {
+                            loadPostDetail(currentPostId);
+                            loadComments(currentPostId); // 게시물 로드 후 댓글 로드
                         } else {
                             postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">오류: 게시물 ID가 URL에 없습니다.</div>';
                             console.error("post-detail.html: 게시물 ID가 URL에 없습니다.");
@@ -235,18 +472,54 @@
                     const postAuthorName = post.authorName || '익명';
                     const postTimestamp = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString('ko-KR') : '날짜 없음';
                     const postContentHtml = post.content || '<p>내용 없음</p>'; // Quill에서 저장된 HTML 내용
+                    const postCategory = post.category || '일반'; // 카테고리 필드 추가 (기본값 '일반')
+                    const postViews = post.views || Math.floor(Math.random() * 100) + 1; // 조회수 필드 추가 (임시 랜덤값)
+                    const postTemperature = post.temperature || Math.floor(Math.random() * 100); // 온도 필드 추가 (임시 랜덤값)
 
                     postDetailContentDiv.innerHTML = `
                         <h2>${postTitle}</h2>
                         <div class="post-meta">
-                            <span>작성자: ${postAuthorName}</span>
-                            <span>${postTimestamp}</span>
+                            <div class="author-info">
+                                <span>${postAuthorName} ${postTemperature} ℃</span>
+                                <span class="category">${postCategory}</span>
+                            </div>
+                            <div class="date-views">
+                                <span>${postTimestamp} 조회 ${postViews} 회</span>
+                            </div>
                         </div>
                         <div class="ql-editor">
                             ${postContentHtml}
                         </div>
+                        <div class="action-buttons">
+                            <div class="vote-buttons">
+                                <button class="vote-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+                                    </svg>
+                                </button>
+                                <span class="vote-count">0</span>
+                                <button class="vote-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="right-buttons">
+                                <button class="action-icon-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                    </svg>
+                                    저장
+                                </button>
+                                <button class="action-icon-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 100 2.186m0-2.186A.75.75 0 017.5 12m0 0H12m-4.783 1.293a2.25 2.25 0 110 2.186m0-2.186A.75.75 0 017.5 15m0 0H12m-4.783-4.293a2.25 2.25 0 100 2.186m0-2.186A.75.75 0 017.5 9m0 0H12m7.5 0a2.25 2.25 0 100-2.186m0 2.186A.75.75 0 0119.5 9m0 0H12m7.5 3a2.25 2.25 0 100-2.186m0 2.186A.75.75 0 0119.5 12m0 0H12m7.5 3a2.25 2.25 0 100-2.186m0 2.186A.75.75 0 0119.5 15m0 0H12" />
+                                    </svg>
+                                    공유
+                                </button>
+                            </div>
+                        </div>
                     `;
-                    // ql-editor 클래스를 가진 div에 직접 HTML을 삽입하여 Quill의 렌더링 스타일을 적용
                 } else {
                     postDetailContentDiv.innerHTML = '<div class="text-gray-400 text-center py-8">게시물을 찾을 수 없습니다.</div>';
                     console.warn("post-detail.html: 게시물 ID:", postId, "를 찾을 수 없습니다.");
@@ -256,6 +529,104 @@
                 postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">게시물을 불러오는 데 오류가 발생했습니다. 콘솔을 확인해주세요.</div>';
             }
         }
+
+        // 댓글 로드 함수
+        function loadComments(postId) {
+            console.log("post-detail.html: loadComments 함수 시작! postId:", postId);
+            if (!db) {
+                console.error("post-detail.html: Firestore가 초기화되지 않았습니다.");
+                commentsListDiv.innerHTML = '<div class="text-red-400 text-center py-8">데이터베이스 초기화 대기 중...</div>';
+                return;
+            }
+
+            const commentsCollectionRef = collection(db, `artifacts/${appId}/public/data/community_posts/${postId}/comments`);
+            const q = query(commentsCollectionRef, orderBy('timestamp', 'asc')); // 오래된 순으로 정렬
+
+            onSnapshot(q, (snapshot) => {
+                console.log("post-detail.html: 댓글 onSnapshot 콜백 실행됨. 댓글 수:", snapshot.size);
+                let commentsHtml = '';
+                if (snapshot.empty) {
+                    commentsHtml = '<div class="text-gray-400 text-center py-4">아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</div>';
+                } else {
+                    snapshot.forEach(doc => {
+                        const comment = doc.data();
+                        const commentAuthorName = comment.authorName || '익명';
+                        const commentTimestamp = comment.timestamp ? new Date(comment.timestamp.toDate()).toLocaleString('ko-KR') : '날짜 없음';
+                        const commentContent = comment.content || '내용 없음';
+                        const commentLikes = comment.likes || 0; // 좋아요 수 (임시)
+                        const commentDislikes = comment.dislikes || 0; // 싫어요 수 (임시)
+
+                        commentsHtml += `
+                            <div class="comment-item">
+                                <div class="comment-meta">
+                                    <span>${commentAuthorName}</span>
+                                    <span>${commentTimestamp}</span>
+                                </div>
+                                <div class="comment-content">${commentContent}</div>
+                                <div class="comment-actions">
+                                    <div class="vote-buttons">
+                                        <button class="vote-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879.629-2.031.928-3.35.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
+                                            </svg>
+                                        </button>
+                                        <span>${commentLikes}</span>
+                                        <button class="vote-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 rotate-180">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
+                                            </svg>
+                                        </button>
+                                        <span>${commentDislikes}</span>
+                                    </div>
+                                    <button class="reply-button">대 댓글 0개 보기</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                commentsListDiv.innerHTML = commentsHtml;
+                commentCountSpan.textContent = snapshot.size; // 댓글 수 업데이트
+            }, (error) => {
+                console.error("post-detail.html: 댓글 불러오기 오류 (onSnapshot 에러 콜백):", error);
+                commentsListDiv.innerHTML = '<div class="text-red-400 text-center py-8">댓글을 불러오는 데 오류가 발생했습니다. 콘솔을 확인해주세요.</div>';
+            });
+        }
+
+        // 댓글 추가 함수
+        sendCommentButton.addEventListener('click', async () => {
+            console.log("post-detail.html: 댓글 전송 버튼 클릭됨.");
+            if (!db || !auth.currentUser || !currentPostId) {
+                console.error("post-detail.html: 댓글 작성: 로그인 또는 게시물 ID가 필요합니다.");
+                alert('로그인 또는 게시물 ID가 필요합니다.');
+                return;
+            }
+
+            const commentContent = commentInput.value.trim();
+
+            if (!commentContent) {
+                console.warn("post-detail.html: 댓글 내용이 비어 있습니다.");
+                alert('댓글 내용을 입력해주세요.');
+                return;
+            }
+
+            try {
+                const commentsCollectionRef = collection(db, `artifacts/${appId}/public/data/community_posts/${currentPostId}/comments`);
+                await addDoc(commentsCollectionRef, {
+                    content: commentContent,
+                    authorId: userId,
+                    authorName: userName,
+                    timestamp: new Date(),
+                    likes: 0,
+                    dislikes: 0
+                });
+                console.log("post-detail.html: 댓글 추가 성공!");
+                commentInput.value = ''; // 입력창 비우기
+            } catch (e) {
+                console.error("post-detail.html: 댓글 추가 오류: ", e);
+                alert('댓글 추가에 실패했습니다. 콘솔을 확인해주세요.');
+            }
+        });
+
 
         window.onload = function() {
             console.log("post-detail.html: window.onload 이벤트 발생.");
