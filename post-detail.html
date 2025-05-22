@@ -55,25 +55,19 @@
             color: #a0aec0;
             margin-bottom: 20px;
             padding-bottom: 15px;
-            border-bottom: 1px solid #4a5568; /* 구분선 */
+            /* border-bottom: 1px solid #4a5568; /* 구분선 - 이미지에 없음 */ */
         }
         .post-meta .author-info {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
         }
-        .post-meta .author-info .category {
-            background-color: #63b3ed; /* 카테고리 배경색 */
-            color: #1a1a1a; /* 카테고리 글자색 */
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
+        .post-meta .author-name {
             font-weight: bold;
-            margin-left: 8px;
+            color: #e2e8f0;
+            margin-right: 8px;
         }
-        .post-meta .date-views {
-            display: flex;
-            justify-content: space-between;
+        .post-meta .date-time {
             font-size: 0.75rem;
             color: #6b7280;
         }
@@ -146,42 +140,40 @@
         .action-buttons {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 20px; /* 버튼 간격 조정 */
             padding: 15px 0;
             border-top: 1px solid #4a5568;
             margin-top: 20px;
             color: #a0aec0;
+            justify-content: space-around; /* 버튼들을 중앙으로 모으기 */
         }
         .action-buttons .action-button {
-            background-color: #3a3a3a;
-            border: 1px solid #4a5568;
-            padding: 8px 12px;
-            border-radius: 8px;
+            background-color: transparent; /* 배경 없음 */
+            border: none; /* 테두리 없음 */
+            padding: 0; /* 패딩 없음 */
+            border-radius: 0; /* 둥근 모서리 없음 */
             cursor: pointer;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
+            transition: color 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #e2e8f0;
+            color: #a0aec0; /* 기본 글자색 */
+            font-size: 0.9rem; /* 글자 크기 조정 */
+            font-weight: normal; /* 폰트 굵기 조정 */
         }
         .action-buttons .action-button:hover {
-            background-color: #4a4a4a;
-            border-color: #63b3ed;
+            color: #e2e8f0; /* 호버 시 글자색 변경 */
         }
         .action-buttons .action-button svg {
-            width: 20px;
+            width: 20px; /* 아이콘 크기 조정 */
             height: 20px;
             fill: currentColor;
-            margin-right: 5px;
+            margin-right: 5px; /* 아이콘과 텍스트 간격 */
         }
-        .action-buttons .like-count {
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: #e2e8f0;
-            margin-left: 5px;
-        }
-        .action-buttons .spacer {
-            flex-grow: 1; /* Push buttons to the right */
+        .action-buttons .count {
+            font-weight: normal; /* 숫자 굵기 조정 */
+            font-size: 0.9rem; /* 숫자 크기 조정 */
+            color: #a0aec0; /* 숫자 색상 */
         }
 
         /* 댓글 섹션 */
@@ -277,9 +269,15 @@
             padding: 1rem;
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
             display: flex;
-            align-items: center;
+            flex-direction: column; /* Stack items vertically */
             gap: 10px;
             z-index: 20;
+        }
+        .comment-input-container .comment-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
         }
         .comment-input-container .comment-input {
             flex-grow: 1;
@@ -315,6 +313,117 @@
             height: 20px;
             fill: currentColor;
         }
+
+        /* 댓글 아이디어 제안 섹션 */
+        .comment-suggestions-container {
+            background-color: #3a3a3a;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px; /* 입력창과 간격 */
+            max-height: 150px; /* 최대 높이 설정 */
+            overflow-y: auto; /* 내용이 넘치면 스크롤 */
+            border: 1px solid #4a5568;
+        }
+        .comment-suggestions-container h4 {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+        .comment-suggestions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .comment-suggestions-list li {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            padding: 5px 0;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .comment-suggestions-list li:hover {
+            color: #63b3ed;
+        }
+        .comment-suggestions-list li:not(:last-child) {
+            border-bottom: 1px solid #4a5568; /* 아이디어 간 구분선 */
+        }
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a0aec0;
+            font-size: 0.9rem;
+            padding: 10px;
+        }
+        .loading-indicator svg {
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 요약 모달 스타일 */
+        .summary-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .summary-modal-content {
+            background-color: #2a2a2a;
+            padding: 24px;
+            border-radius: 12px;
+            color: #e2e8f0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #4a5568;
+        }
+
+        .summary-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #4a5568;
+            padding-bottom: 12px;
+        }
+
+        .summary-modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+
+        .summary-modal-close-button {
+            background: none;
+            border: none;
+            color: #e2e8f0;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .summary-modal-close-button:hover {
+             color: #63b3ed;
+        }
+
+        .summary-content {
+            white-space: pre-wrap; /* 줄바꿈 유지 */
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -326,7 +435,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
             </svg>
         </button>
-        <h1 class="text-xl font-bold flex-grow text-center">자유 게시판 <span class="text-base text-gray-400 ml-2">인천대</span></h1>
+        <h1 class="text-xl font-bold flex-grow text-center">자유 게시판</span></h1>
         <div class="flex items-center gap-4">
             <button class="text-gray-400 hover:text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -361,12 +470,46 @@
     </main>
 
     <div class="comment-input-container">
-        <input type="text" id="comment-input" placeholder="댓글을 입력 해 주세요" class="comment-input">
-        <button id="send-comment-button" class="send-button">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-            </svg>
-        </button>
+        <div id="comment-suggestions-area" class="comment-suggestions-container hidden">
+            <div class="loading-indicator hidden" id="suggestions-loading">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                댓글 아이디어 생성 중...
+            </div>
+            <h4 id="suggestions-header" class="hidden">댓글 아이디어:</h4>
+            <ul id="comment-suggestions-list" class="comment-suggestions-list">
+                </ul>
+        </div>
+        <div class="comment-input-row">
+            <input type="text" id="comment-input" placeholder="댓글을 입력 해 주세요" class="comment-input">
+            <button id="get-suggestions-button" class="send-button bg-gray-600 hover:bg-gray-700">
+                ✨ 아이디어
+            </button>
+            <button id="send-comment-button" class="send-button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div id="summary-modal-overlay" class="summary-modal-overlay hidden">
+        <div class="summary-modal-content">
+            <div class="summary-modal-header">
+                <h3>게시물 요약</h3>
+                <button class="summary-modal-close-button" onclick="hideSummaryModal()">&times;</button>
+            </div>
+            <div id="summary-modal-loading" class="loading-indicator hidden">
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                게시물 요약 생성 중...
+            </div>
+            <p id="summary-modal-text" class="summary-content"></p>
+        </div>
     </div>
 
     <script type="module">
@@ -374,14 +517,16 @@
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, addDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         let db;
         let auth;
-        let userId = 'anonymous'; // 현재 사용자 ID (권한 확인용)
-        let userName = '익명'; // 사용자 이름
+        let userId = 'anonymous'; // Current user ID for authentication
+        let userName = '익명'; // User name, always "익명" as per image
         let appId = 'default-app-id';
-        let currentPostId = null; // 현재 보고 있는 게시물 ID
+        let currentPostId = null; // Current post ID being viewed
+        let currentPostTitle = ''; // Store post title for AI suggestions
+        let currentPostContent = ''; // Store post content for AI suggestions
 
         if (typeof __app_id !== 'undefined') {
             appId = __app_id;
@@ -402,59 +547,69 @@
         const commentInput = document.getElementById('comment-input');
         const sendCommentButton = document.getElementById('send-comment-button');
         const commentCountSpan = document.getElementById('comment-count');
+        const getSuggestionsButton = document.getElementById('get-suggestions-button');
+        const commentSuggestionsArea = document.getElementById('comment-suggestions-area');
+        const commentSuggestionsList = document.getElementById('comment-suggestions-list');
+        const suggestionsLoading = document.getElementById('suggestions-loading');
+        const suggestionsHeader = document.getElementById('suggestions-header');
 
-        // URL에서 게시물 ID 가져오기
+        const summaryModalOverlay = document.getElementById('summary-modal-overlay');
+        const summaryModalLoading = document.getElementById('summary-modal-loading');
+        const summaryModalText = document.getElementById('summary-modal-text');
+
+
+        // Get post ID from URL
         function getPostIdFromUrl() {
             const params = new URLSearchParams(window.location.search);
             return params.get('id');
         }
 
         async function initializeFirebase() {
-            console.log("post-detail.html: initializeFirebase 함수 시작!");
+            console.log("post-detail.html: initializeFirebase function started!");
             try {
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
-                console.log("post-detail.html: Firebase 앱, Firestore, Auth 초기화 완료.");
+                console.log("post-detail.html: Firebase App, Firestore, Auth initialized.");
 
                 onAuthStateChanged(auth, async (user) => {
                     if (user) {
                         userId = user.uid;
-                        userName = `익명`; // 사용자 이름은 항상 '익명'으로 표시
+                        userName = '익명'; // Always "익명" as per image
                         console.log("post-detail.html: Firebase authenticated. User ID:", userId);
                         currentPostId = getPostIdFromUrl();
                         if (currentPostId) {
                             loadPostDetail(currentPostId);
-                            loadComments(currentPostId); // 게시물 로드 후 댓글 로드
+                            loadComments(currentPostId); // Load comments after post
                         } else {
-                            postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">오류: 게시물 ID가 URL에 없습니다.</div>';
-                            console.error("post-detail.html: 게시물 ID가 URL에 없습니다.");
+                            postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">Error: Post ID not found in URL.</div>';
+                            console.error("post-detail.html: Post ID not found in URL.");
                         }
                     } else {
-                        console.log("post-detail.html: onAuthStateChanged: 사용자 없음. 익명 로그인 시도...");
+                        console.log("post-detail.html: onAuthStateChanged: No user. Attempting anonymous sign-in...");
                         try {
                             await signInAnonymously(auth);
-                            console.log("post-detail.html: 익명 로그인 시도 완료.");
+                            console.log("post-detail.html: Anonymous sign-in completed.");
                         } catch (authError) {
-                            console.error("post-detail.html: 익명 인증 실패:", authError);
-                            postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">인증에 실패하여 게시물을 불러올 수 없습니다. 콘솔을 확인해주세요.</div>';
+                            console.error("post-detail.html: Anonymous authentication failed:", authError);
+                            postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">Authentication failed. Cannot load post. Please check console.</div>';
                         }
                     }
                 }, (error) => {
-                    console.error("post-detail.html: onAuthStateChanged 리스너 오류:", error);
-                    postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">인증 리스너 오류로 게시물을 불러올 수 없습니다. 콘솔을 확인해주세요.</div>';
+                    console.error("post-detail.html: onAuthStateChanged listener error:", error);
+                    postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">Authentication listener error. Cannot load post. Please check console.</div>';
                 });
             } catch (error) {
-                console.error("post-detail.html: Firebase 초기화 오류:", error);
-                postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">Firebase 초기화에 실패했습니다. 콘솔을 확인해주세요.</div>';
+                console.error("post-detail.html: Firebase initialization error:", error);
+                postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">Firebase initialization failed. Please check console.</div>';
             }
         }
 
         async function loadPostDetail(postId) {
-            console.log("post-detail.html: loadPostDetail 함수 시작! postId:", postId);
+            console.log("post-detail.html: loadPostDetail function started! postId:", postId);
             if (!db) {
-                console.error("post-detail.html: Firestore가 초기화되지 않았습니다.");
-                postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">데이터베이스 초기화 대기 중...</div>';
+                console.error("post-detail.html: Firestore not initialized.");
+                postDetailContentDiv.innerHTML = '<div class="text-red-400 text-center py-8">Waiting for database initialization...</div>';
                 return;
             }
 
@@ -464,47 +619,72 @@
 
                 if (postSnap.exists()) {
                     const post = postSnap.data();
-                    console.log("post-detail.html: 게시물 데이터 불러오기 성공:", post);
+                    console.log("post-detail.html: Post data loaded successfully:", post);
 
-                    const postTitle = post.title || '제목 없음';
-                    // const postAuthorName = post.authorName || '익명'; // Always '익명' as per image
+                    currentPostTitle = post.title || '제목 없음';
+                    currentPostContent = post.content || '<p>내용 없음</p>'; // Store content for AI
                     const postTimestamp = post.timestamp ? new Date(post.timestamp.toDate()) : new Date();
                     const formattedDate = postTimestamp.toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\. /g, '/').slice(0, -1);
                     const formattedTime = postTimestamp.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
-                    const postContentHtml = post.content || '<p>내용 없음</p>'; // Quill에서 저장된 HTML 내용
-                    const postViews = post.views || Math.floor(Math.random() * 100) + 1; // 조회수 필드 추가 (임시 랜덤값)
-                    const postLikes = post.likes || Math.floor(Math.random() * 200); // 좋아요 수 (임시)
-                    const postComments = post.comments || Math.floor(Math.random() * 50); // 댓글 수 (임시)
-                    const postScraps = post.scraps || Math.floor(Math.random() * 10); // 스크랩 수 (임시)
+                    let postLikes = post.likes || 0; // Initialize likes
+                    let postScraps = post.scraps || 0; // Initialize scraps
+
+                    // Increment views on load
+                    let postViews = (post.views || 0) + 1;
+                    await updateDoc(postRef, { views: postViews });
 
                     postDetailContentDiv.innerHTML = `
                         <div class="post-meta">
                             <div class="author-info">
                                 <span class="author-name">익명</span>
-                                <span>${formattedDate} ${formattedTime}</span>
+                                <span class="date-time">${formattedDate} ${formattedTime}</span>
                             </div>
                         </div>
-                        <h2>${postTitle}</h2>
+                        <h2>${currentPostTitle}</h2>
                         <div class="ql-editor">
-                            ${postContentHtml}
+                            ${currentPostContent}
                         </div>
                         <div class="action-buttons">
-                            <button class="action-button">
+                            <button class="action-button" id="like-post-button">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
                                 </svg>
-                                공감 <span class="like-count">${postLikes}</span>
+                                공감 <span id="post-likes-count" class="count">${postLikes}</span>
+                            </button>
+                            <button class="action-button" id="scrap-post-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                                </svg>
+                                스크랩 <span id="post-scraps-count" class="count">${postScraps}</span>
+                            </button>
+                            <button class="action-button" id="summarize-post-button">
+                                ✨ 요약
                             </button>
                             <button class="action-button">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 10.5V1.5m0 9a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 10.5v-4.5m0 0a2.25 2.25 0 012.25-2.25h1.372c.516 0 .966.351 1.048.832l3.233 11.056l-.657 2.105M15.75 16.5H18a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0018 4.5h-1.372c-.516 0-.966-.351-1.048-.832L12.97 1.5l-.657 2.105M12 18.75h.008v.008H12v-.008z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H7.5m2.25 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H9.75m3 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m2.25 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H14.25m3 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H16.5m1.5-6.75V4.875c0-.621-.504-1.125-1.125-1.125H4.875C4.254 3.75 3.75 4.254 3.75 4.875v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V10.5m6 2.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm-1.5 0H21m-3-3v2.25m-2.25-2.25H18m2.25 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
-                                스크랩
+                                댓글 <span id="post-comments-count" class="count">${post.commentsCount || 0}</span>
                             </button>
-                            <div class="spacer"></div>
-                            <span>조회 ${postViews}</span>
                         </div>
                     `;
+
+                    // Add event listeners for like and scrap buttons
+                    document.getElementById('like-post-button').addEventListener('click', async () => {
+                        postLikes++;
+                        await updateDoc(postRef, { likes: postLikes });
+                        document.getElementById('post-likes-count').textContent = postLikes;
+                    });
+
+                    document.getElementById('scrap-post-button').addEventListener('click', async () => {
+                        postScraps++;
+                        await updateDoc(postRef, { scraps: postScraps });
+                        document.getElementById('post-scraps-count').textContent = postScraps;
+                    });
+
+                    // Add event listener for summarize button
+                    document.getElementById('summarize-post-button').addEventListener('click', summarizePost);
+
                 } else {
                     postDetailContentDiv.innerHTML = '<div class="text-gray-400 text-center py-8">게시물을 찾을 수 없습니다.</div>';
                     console.warn("post-detail.html: 게시물 ID:", postId, "를 찾을 수 없습니다.");
@@ -517,30 +697,30 @@
 
         // 댓글 로드 함수
         function loadComments(postId) {
-            console.log("post-detail.html: loadComments 함수 시작! postId:", postId);
+            console.log("post-detail.html: loadComments function started! postId:", postId);
             if (!db) {
-                console.error("post-detail.html: Firestore가 초기화되지 않았습니다.");
-                commentsListDiv.innerHTML = '<div class="text-red-400 text-center py-8">데이터베이스 초기화 대기 중...</div>';
+                console.error("post-detail.html: Firestore not initialized.");
+                commentsListDiv.innerHTML = '<div class="text-red-400 text-center py-8">Waiting for database initialization...</div>';
                 return;
             }
 
             const commentsCollectionRef = collection(db, `artifacts/${appId}/public/data/community_posts/${postId}/comments`);
-            const q = query(commentsCollectionRef, orderBy('timestamp', 'asc')); // 오래된 순으로 정렬
+            const q = query(commentsCollectionRef, orderBy('timestamp', 'asc')); // Order by oldest first
 
             onSnapshot(q, (snapshot) => {
-                console.log("post-detail.html: 댓글 onSnapshot 콜백 실행됨. 댓글 수:", snapshot.size);
+                console.log("post-detail.html: Comments onSnapshot callback executed. Number of comments:", snapshot.size);
                 let commentsHtml = '';
                 if (snapshot.empty) {
                     commentsHtml = '<div class="text-gray-400 text-center py-4">아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</div>';
                 } else {
                     snapshot.forEach(doc => {
                         const comment = doc.data();
-                        // const commentAuthorName = comment.authorName || '익명'; // Always '익명' as per image
+                        const commentId = doc.id;
                         const commentTimestamp = comment.timestamp ? new Date(comment.timestamp.toDate()) : new Date();
                         const formattedDate = commentTimestamp.toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\. /g, '/').slice(0, -1);
                         const formattedTime = commentTimestamp.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: false });
                         const commentContent = comment.content || '내용 없음';
-                        const commentLikes = comment.likes || Math.floor(Math.random() * 100); // 좋아요 수 (임시)
+                        let commentLikes = comment.likes || 0; // Initialize comment likes
 
                         commentsHtml += `
                             <div class="comment-item">
@@ -550,11 +730,11 @@
                                 </div>
                                 <div class="comment-content">${commentContent}</div>
                                 <div class="comment-actions">
-                                    <button class="like-button">
+                                    <button class="like-button" data-comment-id="${commentId}">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.879.629 2.031.928 3.35.928h.397m.007-.928a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01.928-.928m0 0c.879-.629 2.031-.928 3.35-.928h.397a2.25 2.25 0 012.244 2.244v.007m0 0v.397m0 .007a2.25 2.25 0 01-.928.928m0 0a2.25 2.25 0 00-.928.928m0 0c-.879.629-2.031.928-3.35.928H9.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H7.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H6.75m0 0a2.25 2.25 0 00-.928-.928m0 0a2.25 2.25 0 01-.928-.928m0 0c-.879-.629-2.031-.928-3.35-.928H4.5m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H3.75m0 0a2.25 2.25 0 00-.928.928m0 0a2.25 2.25 0 01-.928.928m0 0c-.879-.629-2.031-.928-3.35-.928H2.25M12 18.75a.75.75 0 01-.75-.75v-3.75a.75.75 0 01.75-.75h.75a.75.75 0 01.75.75v3.75a.75.75 0 01-.75.75h-.75z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                         </svg>
-                                        <span>${commentLikes}</span>
+                                        <span id="comment-likes-count-${commentId}">${commentLikes}</span>
                                     </button>
                                 </div>
                             </div>
@@ -562,18 +742,38 @@
                     });
                 }
                 commentsListDiv.innerHTML = commentsHtml;
-                commentCountSpan.textContent = snapshot.size; // 댓글 수 업데이트
+                commentCountSpan.textContent = snapshot.size; // Update comment count
+
+                // Attach event listeners to newly rendered comment like buttons
+                snapshot.forEach(doc => {
+                    const commentId = doc.id;
+                    const likeButton = document.querySelector(`.comment-item .like-button[data-comment-id="${commentId}"]`);
+                    if (likeButton) {
+                        likeButton.addEventListener('click', async () => {
+                            const commentRef = doc(db, `artifacts/${appId}/public/data/community_posts/${postId}/comments`, commentId);
+                            let currentLikes = doc.data().likes || 0;
+                            currentLikes++;
+                            await updateDoc(commentRef, { likes: currentLikes });
+                            // The onSnapshot listener will automatically update the UI
+                        });
+                    }
+                });
+
+                // Update post's commentsCount field
+                const postRef = doc(db, `artifacts/${appId}/public/data/community_posts`, postId);
+                updateDoc(postRef, { commentsCount: snapshot.size });
+
             }, (error) => {
-                console.error("post-detail.html: 댓글 불러오기 오류 (onSnapshot 에러 콜백):", error);
+                console.error("post-detail.html: Error loading comments (onSnapshot error callback):", error);
                 commentsListDiv.innerHTML = '<div class="text-red-400 text-center py-8">댓글을 불러오는 데 오류가 발생했습니다. 콘솔을 확인해주세요.</div>';
             });
         }
 
         // 댓글 추가 함수
         sendCommentButton.addEventListener('click', async () => {
-            console.log("post-detail.html: 댓글 전송 버튼 클릭됨.");
+            console.log("post-detail.html: Comment send button clicked.");
             if (!db || !auth.currentUser || !currentPostId) {
-                console.error("post-detail.html: 댓글 작성: 로그인 또는 게시물 ID가 필요합니다.");
+                console.error("post-detail.html: Comment creation: Login or Post ID required.");
                 alert('로그인 또는 게시물 ID가 필요합니다.');
                 return;
             }
@@ -581,7 +781,7 @@
             const commentContent = commentInput.value.trim();
 
             if (!commentContent) {
-                console.warn("post-detail.html: 댓글 내용이 비어 있습니다.");
+                console.warn("post-detail.html: Comment content is empty.");
                 alert('댓글 내용을 입력해주세요.');
                 return;
             }
@@ -591,23 +791,142 @@
                 await addDoc(commentsCollectionRef, {
                     content: commentContent,
                     authorId: userId,
-                    authorName: userName,
+                    authorName: userName, // Always "익명"
                     timestamp: new Date(),
                     likes: 0
                 });
-                console.log("post-detail.html: 댓글 추가 성공!");
-                commentInput.value = ''; // 입력창 비우기
+                console.log("post-detail.html: Comment added successfully!");
+                commentInput.value = ''; // Clear input field
             } catch (e) {
-                console.error("post-detail.html: 댓글 추가 오류: ", e);
+                console.error("post-detail.html: Error adding comment: ", e);
                 alert('댓글 추가에 실패했습니다. 콘솔을 확인해주세요.');
             }
         });
 
+        // Gemini API를 사용하여 댓글 아이디어 생성
+        getSuggestionsButton.addEventListener('click', async () => {
+            console.log("post-detail.html: Get Suggestions button clicked.");
+            if (!currentPostTitle || !currentPostContent) {
+                alert('게시물 내용을 불러올 수 없습니다.');
+                return;
+            }
+
+            commentSuggestionsArea.classList.remove('hidden');
+            suggestionsLoading.classList.remove('hidden');
+            suggestionsHeader.classList.add('hidden'); // Hide header while loading
+            commentSuggestionsList.innerHTML = ''; // Clear previous suggestions
+
+            const prompt = `다음 게시물에 대한 몇 가지 댓글 아이디어를 생성해 주세요.
+            게시물 제목: ${currentPostTitle}
+            게시물 내용: ${currentPostContent.replace(/<[^>]*>?/gm, '')}
+            제안된 댓글은 짧고 다양해야 합니다. 각 아이디어를 별표(*)로 시작하는 목록으로 제공해 주세요. 3~5개 정도의 아이디어를 생성해 주세요.`;
+
+            try {
+                const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                suggestionsLoading.classList.add('hidden'); // Hide loading indicator
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    console.log("Gemini API response:", text);
+
+                    const suggestions = text.split('\n').filter(line => line.startsWith('*')).map(line => line.substring(1).trim());
+                    if (suggestions.length > 0) {
+                        suggestionsHeader.classList.remove('hidden'); // Show header
+                        suggestions.forEach(suggestion => {
+                            const li = document.createElement('li');
+                            li.textContent = suggestion;
+                            li.addEventListener('click', () => {
+                                commentInput.value = suggestion;
+                                commentSuggestionsArea.classList.add('hidden'); // Hide suggestions after selection
+                            });
+                            commentSuggestionsList.appendChild(li);
+                        });
+                    } else {
+                        commentSuggestionsList.innerHTML = '<li>아이디어를 생성할 수 없습니다. 다시 시도해 주세요.</li>';
+                    }
+                } else {
+                    commentSuggestionsList.innerHTML = '<li>아이디어를 생성하는 데 실패했습니다.</li>';
+                    console.error("Gemini API: Unexpected response structure or no content.", result);
+                }
+            } catch (error) {
+                suggestionsLoading.classList.add('hidden'); // Hide loading indicator
+                commentSuggestionsList.innerHTML = '<li>아이디어 생성 중 오류가 발생했습니다.</li>';
+                console.error("Error calling Gemini API:", error);
+            }
+        });
+
+        // 게시물 요약 함수
+        async function summarizePost() {
+            console.log("summarizePost function clicked.");
+            if (!currentPostTitle || !currentPostContent) {
+                alert('게시물 내용을 불러올 수 없습니다.');
+                return;
+            }
+
+            // Show modal and loading indicator
+            summaryModalOverlay.classList.remove('hidden');
+            summaryModalLoading.classList.remove('hidden');
+            summaryModalText.textContent = ''; // Clear previous summary
+
+            const prompt = `다음 게시물을 3~5줄로 간결하게 요약해 주세요.
+            게시물 제목: ${currentPostTitle}
+            게시물 내용: ${currentPostContent.replace(/<[^>]*>?/gm, '')}`;
+
+            try {
+                const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                const apiKey = ""; // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                summaryModalLoading.classList.add('hidden'); // Hide loading indicator
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    console.log("Gemini API summary response:", text);
+                    summaryModalText.textContent = text;
+                } else {
+                    summaryModalText.textContent = '게시물을 요약하는 데 실패했습니다.';
+                    console.error("Gemini API: Unexpected response structure or no content for summary.", result);
+                }
+            } catch (error) {
+                summaryModalLoading.classList.add('hidden'); // Hide loading indicator
+                summaryModalText.textContent = '요약 생성 중 오류가 발생했습니다.';
+                console.error("Error calling Gemini API for summary:", error);
+            }
+        }
+
+        // 요약 모달 숨기기 함수
+        function hideSummaryModal() {
+            summaryModalOverlay.classList.add('hidden');
+        }
 
         window.onload = function() {
-            console.log("post-detail.html: window.onload 이벤트 발생.");
+            console.log("post-detail.html: window.onload event fired.");
             initializeFirebase();
         };
+
+        // 전역 스코프에 함수 노출 (HTML에서 직접 호출할 수 있도록)
+        window.hideSummaryModal = hideSummaryModal;
     </script>
 </body>
 </html>
