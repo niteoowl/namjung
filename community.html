@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>부산남중학교 - 커뮤니티</title>
+    <title>우리 학교 정보 포털 - 커뮤니티</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 기본 폰트 및 다크 모드 배경 설정 */
@@ -12,7 +12,7 @@
             background-color: #1a1a1a; /* 어두운 배경색 */
             color: #e2e8f0; /* 밝은 글자색 */
             line-height: 1.6;
-            padding-top: 60px; /* 고정 헤더 높이만큼 여백 추가 */
+            padding-top: 100px; /* 고정 헤더와 탭 높이만큼 여백 추가 */
             padding-bottom: 60px; /* 하단 내비게이션 바 높이만큼 여백 추가 */
             scroll-behavior: smooth; /* 부드러운 스크롤 효과 추가 */
         }
@@ -28,13 +28,72 @@
             width: 100%;
             background-color: #0e1317; /* 헤더 배경색 */
             color: #e2e8f0; /* 밝은 글자색 */
-            padding: 1rem; /* 패딩 */
+            padding: 0.75rem 1rem; /* 패딩 줄임 */
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 20; /* 다른 요소 위에 표시 */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* 그림자 추가 */
         }
+        .header-tabs {
+            display: flex;
+            gap: 1.5rem; /* 탭 간격 */
+        }
+        .header-tab {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #a0aec0;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .header-tab.active {
+            color: #e2e8f0;
+        }
+        .header-tab:hover {
+            color: #e2e8f0;
+        }
+
+        /* 서브 내비게이션 탭 (최신, 구독 등) */
+        .sub-nav-tabs {
+            position: fixed;
+            top: 56px; /* 헤더 높이 아래에 위치 */
+            left: 0;
+            width: 100%;
+            background-color: #1a1a1a; /* 배경색 */
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 15;
+            border-bottom: 1px solid #2a2a2a; /* 하단 구분선 */
+        }
+        .sub-nav-tabs .tab-group {
+            display: flex;
+            gap: 1rem;
+        }
+        .sub-nav-tabs .tab-item {
+            background-color: #3a3a3a;
+            color: #a0aec0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px; /* pill shape */
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .sub-nav-tabs .tab-item.active {
+            background-color: #63b3ed; /* 활성 탭 배경색 */
+            color: #1a1a1a; /* 활성 탭 글자색 */
+            font-weight: bold;
+        }
+        .sub-nav-tabs .tab-item:hover {
+            background-color: #4a4a4a;
+            color: #e2e8f0;
+        }
+        .sub-nav-tabs .filter-icon {
+            color: #a0aec0;
+            cursor: pointer;
+        }
+
         /* 하단 고정 내비게이션 바 스타일 */
         .bottom-nav {
             position: fixed;
@@ -109,12 +168,39 @@
             color: #a0aec0;
             margin-bottom: 8px;
         }
-        .post-card .post-meta {
+        .post-card .post-meta-bottom {
             display: flex;
-            justify-content: space-between;
-            align-items: center; /* 세로 중앙 정렬 */
+            align-items: center;
             font-size: 0.75rem;
             color: #6b7280;
+            gap: 10px; /* 아이콘과 숫자 간격 */
+        }
+        .post-card .post-meta-bottom .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .post-card .post-meta-bottom .meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        .post-card .hot-tag {
+            background-color: #ef4444; /* Red for HOT */
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        .post-card .category-tag {
+            background-color: #4a5568; /* Gray for category */
+            color: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-right: 8px;
         }
         .post-card .delete-button {
             background-color: #dc2626; /* 빨간색 */
@@ -124,48 +210,41 @@
             font-size: 0.7rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-left: auto; /* Push to the right */
         }
         .post-card .delete-button:hover {
             background-color: #ef4444;
         }
 
-        /* 글쓰기 버튼 스타일 */
-        .write-button {
-            background-color: #4a5568;
-            color: #e2e8f0;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            width: 100%; /* 너비 기본값 */
+        /* 글쓰기 Floating Action Button */
+        .fab-button {
+            position: fixed;
+            bottom: 80px; /* 하단 내비게이션 바 위 */
+            right: 20px;
+            background-color: #63b3ed; /* 파란색 */
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index: 30;
         }
-        .write-button:hover {
-            background-color: #63b3ed;
+        .fab-button:hover {
+            background-color: #4a90e2;
+            transform: translateY(-2px);
         }
-        /* 비활성화된 글쓰기 버튼 스타일 */
-        .write-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background-color: #4a5568; /* 비활성화 시에도 배경색 유지 */
-        }
-
-        /* 검색창 스타일 */
-        .search-input {
-            background-color: #3a3a3a;
-            border: 1px solid #4a5568;
-            color: #e2e8f0;
-            padding: 8px 12px;
-            border-radius: 8px;
-            width: 100%;
-            outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .search-input:focus {
-            border-color: #63b3ed;
-            box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.5);
+        .fab-button svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
         }
 
-        /* 모달 오버레이 스타일 */
+        /* 모달 오버레이 스타일 (기존 유지) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -178,8 +257,6 @@
             align-items: center;
             z-index: 100; /* 최상단 */
         }
-
-        /* 모달 콘텐츠 스타일 */
         .modal-content {
             background-color: #2a2a2a;
             padding: 24px;
@@ -192,7 +269,6 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
             border: 1px solid #4a5568;
         }
-
         .modal-header {
             display: flex;
             justify-content: space-between;
@@ -201,13 +277,11 @@
             border-bottom: 1px solid #4a5568;
             padding-bottom: 12px;
         }
-
         .modal-header h3 {
             font-size: 1.3rem;
             font-weight: bold;
             color: #e2e8f0;
         }
-
         .modal-close-button {
             background: none;
             border: none;
@@ -219,7 +293,6 @@
         .modal-close-button:hover {
              color: #63b3ed;
         }
-
         .modal-input {
             background-color: #3a3a3a;
             border: 1px solid #4a5568;
@@ -235,12 +308,10 @@
             border-color: #63b3ed;
             box-shadow: 0 0 0 2px rgba(99, 179, 237, 0.5);
         }
-
         .modal-textarea {
             min-height: 120px;
             resize: vertical;
         }
-
         .modal-action-button {
             background-color: #4a5568;
             color: #e2e8f0;
@@ -253,14 +324,9 @@
         .modal-action-button:hover {
             background-color: #63b3ed;
         }
-
-        /* 사용자 ID 표시 스타일 */
+        /* 사용자 ID 표시 스타일 (더 이상 사용되지 않음) */
         .user-id-display {
-            font-size: 0.7rem;
-            color: #a0aec0;
-            margin-top: 10px;
-            text-align: center;
-            word-break: break-all; /* 긴 ID가 잘리지 않도록 */
+            display: none; /* 사용자 ID는 이제 표시하지 않음 */
         }
     </style>
 </head>
@@ -268,15 +334,37 @@
     <script>console.log("HTML body 로드 및 기본 스크립트 실행!");</script>
 
     <header class="fixed-header">
-        <h1 class="text-xl font-bold">커뮤니티</h1>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 cursor-pointer hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" onclick="location.reload();">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.582m-15.356-2A8.001 8.001 0 0019.418 15m0 0H15"></path>
-        </svg>
+        <div class="header-tabs">
+            <span class="header-tab active">피드</span>
+            <span class="header-tab">인기</span>
+            <span class="header-tab">채널</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400 cursor-pointer hover:text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.04 5.455 1.31m5.714 0a24.248 24.248 0 01-5.714 0m5.714 0a3 3 0 10-3 3H9.257a3 3 0 10-3-3m10.135-10.487a1.5 1.5 0 00-2.12-.047L12 3.622m-1.5.342l-2.653 2.653a1.5 1.5 0 00-2.12-.047M12 21l.75-.75L12 21zm-4.5-4.5H5.25A2.25 2.25 0 013 14.25V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25v8.999a2.25 2.25 0 01-2.25 2.25H16.5" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-400 cursor-pointer hover:text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+        </div>
     </header>
 
-    <main class="container mx-auto mt-4 p-4 flex-grow">
+    <div class="sub-nav-tabs">
+        <div class="tab-group">
+            <span class="tab-item active">최신</span>
+            <span class="tab-item">구독</span>
+            <span class="tab-item">실시간</span>
+            <span class="tab-item">트렌딩 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block ml-1 text-red-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.988 8.988 0 013.361-6.867 8.21 8.21 0 007.817 13.535A12.001 12.001 0 0112 21z" />
+            </svg></span>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 filter-icon">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 18H7.5m3-6h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 12H7.5" />
+        </svg>
+    </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+    <main class="container mx-auto mt-4 p-4 flex-grow">
+        <!-- <div class="flex flex-col sm:flex-row gap-4 mb-6">
             <input type="text" id="search-input" placeholder="게시물 검색..." class="search-input flex-grow">
             <button class="write-button flex-shrink-0" id="write-post-button" onclick="window.location.href = '/write';" disabled>
                 <div class="flex items-center justify-center">
@@ -286,17 +374,24 @@
                     글쓰기
                 </div>
             </button>
-        </div>
+        </div> -->
 
-        <div class="user-id-display mb-4">
+        <!-- <div class="user-id-display mb-4">
             내 ID: <span id="current-user-id">로딩 중...</span>
-        </div>
+        </div> -->
 
         <div id="post-list">
             <div class="text-gray-400 text-center py-8">게시물을 불러오는 중입니다...</div>
         </div>
 
     </main>
+
+    <button class="fab-button" onclick="window.location.href = '/write';" id="fab-write-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+        </svg>
+    </button>
+
 
     <nav class="bottom-nav">
         <ul>
@@ -402,9 +497,10 @@
         const postContentTextarea = document.getElementById('post-content');
         const confirmModal = document.getElementById('confirm-modal');
         const confirmDeleteButton = document.getElementById('confirm-delete-button');
-        const currentUserIdSpan = document.getElementById('current-user-id');
-        const searchInput = document.getElementById('search-input');
-        const writePostButton = document.getElementById('write-post-button'); // 글쓰기 버튼 참조 추가
+        // const currentUserIdSpan = document.getElementById('current-user-id'); // Removed as per new design
+        // const searchInput = document.getElementById('search-input'); // Removed as per new design
+        // const writePostButton = document.getElementById('write-post-button'); // Replaced by FAB
+        const fabWriteButton = document.getElementById('fab-write-button'); // FAB reference
 
         // Firebase 초기화 및 인증
         async function initializeFirebase() {
@@ -414,12 +510,12 @@
             if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
                 console.error("Firebase 설정이 불완전합니다. apiKey 또는 projectId가 누락되었습니다.");
                 postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">앱 설정 오류: Firebase 구성 정보가 불완전합니다.</div>';
-                if (currentUserIdSpan) {
-                    currentUserIdSpan.textContent = '설정 오류';
-                    currentUserIdSpan.style.color = 'red';
-                }
-                writePostButton.disabled = true;
-                writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                // if (currentUserIdSpan) { // Removed as per new design
+                //     currentUserIdSpan.textContent = '설정 오류';
+                //     currentUserIdSpan.style.color = 'red';
+                // }
+                fabWriteButton.disabled = true; // FAB 비활성화
+                fabWriteButton.classList.add('opacity-50', 'cursor-not-allowed');
                 return; // Firebase 초기화 중단
             }
 
@@ -434,17 +530,17 @@
                     if (user) {
                         userId = user.uid;
                         userName = `사용자_${userId.substring(0, 8)}`; // 사용자 ID의 일부를 이름으로 사용
-                        if (currentUserIdSpan) {
-                            currentUserIdSpan.textContent = userId; // 전체 사용자 ID 표시
-                        }
+                        // if (currentUserIdSpan) { // Removed as per new design
+                        //     currentUserIdSpan.textContent = userId; // 전체 사용자 ID 표시
+                        // }
                         console.log("Firebase authenticated. User ID:", userId);
-                        writePostButton.disabled = false; // 인증 성공 시 버튼 활성화
-                        writePostButton.classList.remove('opacity-50', 'cursor-not-allowed'); // 비활성화 스타일 제거
+                        fabWriteButton.disabled = false; // 인증 성공 시 FAB 활성화
+                        fabWriteButton.classList.remove('opacity-50', 'cursor-not-allowed'); // 비활성화 스타일 제거
                         loadPosts();
                     } else {
                         console.log("onAuthStateChanged: 사용자 없음. 익명 로그인 시도...");
-                        writePostButton.disabled = true; // 인증 전 버튼 비활성화 유지
-                        writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                        fabWriteButton.disabled = true; // 인증 전 FAB 비활성화 유지
+                        fabWriteButton.classList.add('opacity-50', 'cursor-not-allowed');
 
                         try {
                             // Canvas 환경 외부에서 실행될 경우 initialAuthToken은 null이므로 익명 로그인 시도
@@ -455,34 +551,34 @@
                             // 그러면 이 콜백의 다음 호출에서 버튼이 활성화되고 게시물이 로드됩니다.
                         } catch (authError) {
                             console.error("onAuthStateChanged: 익명 인증 실패:", authError);
-                            if (currentUserIdSpan) {
-                                currentUserIdSpan.textContent = '인증 실패: ' + authError.code; // 더 구체적인 오류 코드 표시
-                                currentUserIdSpan.style.color = 'red';
-                            }
-                            writePostButton.disabled = true; // 버튼 비활성화 유지
-                            writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                            // if (currentUserIdSpan) { // Removed as per new design
+                            //     currentUserIdSpan.textContent = '인증 실패: ' + authError.code; // 더 구체적인 오류 코드 표시
+                            //     currentUserIdSpan.style.color = 'red';
+                            // }
+                            fabWriteButton.disabled = true; // FAB 비활성화 유지
+                            fabWriteButton.classList.add('opacity-50', 'cursor-not-allowed');
                             postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">인증에 실패하여 게시물을 불러올 수 없습니다. 콘솔을 확인해주세요.</div>';
                         }
                     }
                 }, (error) => {
                     console.error("onAuthStateChanged 리스너 오류:", error);
-                    if (currentUserIdSpan) {
-                        currentUserIdSpan.textContent = '인증 리스너 오류';
-                        currentUserIdSpan.style.color = 'red';
-                    }
-                    writePostButton.disabled = true;
-                    writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    // if (currentUserIdSpan) { // Removed as per new design
+                    //     currentUserIdSpan.textContent = '인증 리스너 오류';
+                    //     currentUserIdSpan.style.color = 'red';
+                    // }
+                    fabWriteButton.disabled = true;
+                    fabWriteButton.classList.add('opacity-50', 'cursor-not-allowed');
                     postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">인증 리스너 오류로 게시물을 불러올 수 없습니다. 콘솔을 확인해주세요.</div>';
                 });
             } catch (error) {
                 console.error("Firebase 초기화 오류:", error);
                 postListDiv.innerHTML = '<div class="text-red-400 text-center py-8">Firebase 초기화에 실패했습니다. 콘솔을 확인해주세요.</div>';
-                if (currentUserIdSpan) {
-                    currentUserIdSpan.textContent = '초기화 오류';
-                    currentUserIdSpan.style.color = 'red';
-                }
-                writePostButton.disabled = true;
-                writePostButton.classList.add('opacity-50', 'cursor-not-allowed');
+                // if (currentUserIdSpan) { // Removed as per new design
+                //     currentUserIdSpan.textContent = '초기화 오류';
+                //     currentUserIdSpan.style.color = 'red';
+                // }
+                fabWriteButton.disabled = true;
+                fabWriteButton.classList.add('opacity-50', 'cursor-not-allowed');
             }
         }
 
@@ -515,10 +611,14 @@
                         const post = doc.data();
                         const postId = doc.id;
                         const postTitle = post.title || '제목 없음';
-                        const postContent = post.content || '내용 없음';
-                        const postAuthorName = post.authorName || '익명';
-                        const postTimestamp = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString('ko-KR') : '날짜 없음';
+                        const postContent = post.content || '내용 없음'; // Keep content for search, but not display
                         const postAuthorId = post.authorId;
+                        const postCategory = post.category || '오늘의 수다'; // Default category
+                        const postTimeAgo = post.timestamp ? getTimeAgo(post.timestamp.toDate()) : '방금 전';
+                        const postViews = post.views || Math.floor(Math.random() * 100000); // Random views for demo
+                        const postLikes = post.likes || Math.floor(Math.random() * 1000); // Random likes for demo
+                        const postCommentsCount = post.commentsCount || Math.floor(Math.random() * 500); // Random comments for demo
+                        const isHot = Math.random() > 0.5; // Randomly assign HOT tag for demo
 
                         // 현재 사용자가 작성한 게시물인 경우에만 삭제 버튼 표시
                         const isAuthor = (userId && postAuthorId === userId);
@@ -527,11 +627,34 @@
 
                         postsHtml += `
                             <div class="post-card" data-post-id="${postId}" onclick="location.href='/post-detail.html?id=${postId}'">
-                                <h3>${postTitle}</h3>
-                                <p>${postContent}</p>
-                                <div class="post-meta">
-                                    <span>작성자: ${postAuthorName}</span>
-                                    <span>${postTimestamp}</span>
+                                <div class="flex items-center mb-2">
+                                    ${isHot ? '<span class="hot-tag">HOT</span>' : ''}
+                                    <h3 class="flex-grow">${postTitle}</h3>
+                                </div>
+                                <div class="flex items-center text-sm text-gray-400 mb-3">
+                                    <span class="category-tag">${postCategory}</span>
+                                    <span>${postTimeAgo}</span>
+                                </div>
+                                <div class="post-meta-bottom">
+                                    <div class="meta-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        <span>${postViews}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m0 0l6.75-6.75M12 19.5l-6.75-6.75" />
+                                        </svg>
+                                        <span>${postLikes}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H7.5m2.25 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H9.75m3 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m2.25 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H14.25m3 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H16.5m1.5-6.75V4.875c0-.621-.504-1.125-1.125-1.125H4.875C4.254 3.75 3.75 4.254 3.75 4.875v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V10.5m6 2.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm-1.5 0H21m-3-3v2.25m-2.25-2.25H18m2.25 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                                        </svg>
+                                        <span>${postCommentsCount}</span>
+                                    </div>
                                     ${deleteButtonHtml}
                                 </div>
                             </div>
@@ -546,50 +669,38 @@
             });
         }
 
-        // 새 게시물 추가 함수
-        async function addPost() {
-            console.log("addPost 함수 시작!");
-            if (!db || !auth.currentUser) {
-                console.error("addPost: 로그인이 필요합니다.");
-                alert('로그인이 필요합니다.'); // 사용자에게도 알림
-                return;
-            }
+        // 시간 계산 함수 (예: 2분 전, 8분 전)
+        function getTimeAgo(date) {
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
 
-            const title = postTitleInput.value.trim();
-            const content = postContentTextarea.value.trim();
-
-            if (!title || !content) {
-                console.warn("addPost: 제목과 내용을 모두 입력해야 합니다.");
-                alert('제목과 내용을 모두 입력해주세요.');
-                return;
-            }
-
-            try {
-                const postsCollectionRef = collection(db, `artifacts/${appId}/public/data/community_posts`);
-                console.log("addPost: 게시물 추가 시도:", { title, content, authorId: userId, authorName: userName });
-                await addDoc(postsCollectionRef, {
-                    title: title,
-                    content: content,
-                    authorId: userId,
-                    authorName: userName,
-                    timestamp: new Date() // 클라이언트 타임스탬프 사용
-                });
-                console.log("addPost: 게시물 추가 성공!");
-                postTitleInput.value = '';
-                postContentTextarea.value = '';
-                hidePostModal();
-            } catch (e) {
-                console.error("addPost: 게시물 추가 오류: ", e);
-                alert('게시물 추가에 실패했습니다. 콘솔을 확인해주세요.');
-            }
+            let interval = seconds / 31536000;
+            if (interval > 1) return Math.floor(interval) + "년 전";
+            interval = seconds / 2592000;
+            if (interval > 1) return Math.floor(interval) + "달 전";
+            interval = seconds / 86400;
+            if (interval > 1) return Math.floor(interval) + "일 전";
+            interval = seconds / 3600;
+            if (interval > 1) return Math.floor(interval) + "시간 전";
+            interval = seconds / 60;
+            if (interval > 1) return Math.floor(interval) + "분 전";
+            return "방금 전";
         }
 
-        // 게시물 삭제 함수
+
+        // 새 게시물 추가 함수 (모달은 제거되었지만 함수는 유지)
+        async function addPost() {
+            // 이 함수는 이제 /write 페이지에서 직접 호출됩니다.
+            // 여기서는 더 이상 사용되지 않습니다.
+            console.log("addPost 함수는 이제 /write 페이지에서 사용됩니다.");
+        }
+
+        // 게시물 삭제 함수 (기존 유지)
         async function deletePost(postId) {
             console.log("deletePost 함수 시작! postId:", postId);
             if (!db || !auth.currentUser) {
                 console.error("deletePost: 로그인이 필요합니다.");
-                alert('로그인이 필요합니다.');
+                alert('로그인이 필요합니다.'); // 사용자에게도 알림
                 return;
             }
 
@@ -620,23 +731,7 @@
             }
         }
 
-        // 게시물 작성 모달 표시 (이제 사용되지 않음, /write로 이동)
-        function showPostModal() {
-            // 이 함수는 이제 사용되지 않습니다.
-            // 대신 글쓰기 버튼의 onclick 이벤트가 직접 /write로 이동합니다.
-            console.log("showPostModal: 이 함수는 더 이상 사용되지 않습니다. /write 페이지로 이동합니다.");
-            window.location.href = '/write';
-        }
-
-        // 게시물 작성 모달 숨기기 (모달이 사라지므로 필요 없음)
-        function hidePostModal() {
-            console.log("hidePostModal: 게시물 작성 모달 숨기기 (이 함수는 더 이상 사용되지 않습니다).");
-            // postModal.classList.add('hidden');
-            // postTitleInput.value = ''; // 모달 닫을 때 내용 초기화
-            // postContentTextarea.value = '';
-        }
-
-        // 삭제 확인 모달 표시
+        // 삭제 확인 모달 표시 (기존 유지)
         let postIdToDelete = null; // 삭제할 게시물 ID를 저장할 변수
         function showConfirmModal(postId) {
             console.log("showConfirmModal: 삭제 확인 모달 표시. 삭제할 postId:", postId);
@@ -646,30 +741,30 @@
             confirmDeleteButton.onclick = () => deletePost(postIdToDelete);
         }
 
-        // 삭제 확인 모달 숨기기
+        // 삭제 확인 모달 숨기기 (기존 유지)
         function hideConfirmModal() {
             console.log("hideConfirmModal: 삭제 확인 모달 숨기기.");
             confirmModal.classList.add('hidden');
             postIdToDelete = null;
         }
 
-        // 검색 기능 (클라이언트 측 필터링)
-        searchInput.addEventListener('input', () => {
-            console.log("검색 입력 감지:", searchInput.value);
-            const searchTerm = searchInput.value.toLowerCase();
-            const postCards = postListDiv.querySelectorAll('.post-card');
+        // 검색 기능 (클라이언트 측 필터링) - 검색창 제거로 인해 현재 사용되지 않음
+        // searchInput.addEventListener('input', () => {
+        //     console.log("검색 입력 감지:", searchInput.value);
+        //     const searchTerm = searchInput.value.toLowerCase();
+        //     const postCards = postListDiv.querySelectorAll('.post-card');
 
-            postCards.forEach(card => {
-                const title = card.querySelector('h3').textContent.toLowerCase();
-                const content = card.querySelector('p').textContent.toLowerCase();
+        //     postCards.forEach(card => {
+        //         const title = card.querySelector('h3').textContent.toLowerCase();
+        //         const content = card.querySelector('p').textContent.toLowerCase(); // Use content for search
 
-                if (title.includes(searchTerm) || content.includes(searchTerm)) {
-                    card.style.display = ''; // 표시
-                } else {
-                    card.style.display = 'none'; // 숨김
-                }
-            });
-        });
+        //         if (title.includes(searchTerm) || content.includes(searchTerm)) {
+        //             card.style.display = ''; // 표시
+        //         } else {
+        //             card.style.display = 'none'; // 숨김
+        //         }
+        //     });
+        // });
 
         // 페이지 로드 시 하단 내비게이션 링크 활성 클래스 설정
         window.onload = function() {
@@ -688,12 +783,9 @@
         };
 
         // 전역 스코프에 함수 노출 (HTML에서 직접 호출할 수 있도록)
-        // window.showPostModal = showPostModal; // 이제 사용되지 않음
-        // window.hidePostModal = hidePostModal; // 이제 사용되지 않음
         window.addPost = addPost; // addPost는 현재 모달에서 사용되지 않지만, 혹시 모를 재활용을 위해 유지
         window.showConfirmModal = showConfirmModal;
         window.hideConfirmModal = hideConfirmModal;
-        // window.deletePost = deletePost; // deletePost는 showConfirmModal에서 호출되므로 직접 노출 필요 없음
     </script>
 </body>
-  </html>
+</html>
